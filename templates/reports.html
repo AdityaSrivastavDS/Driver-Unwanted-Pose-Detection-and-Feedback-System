@@ -1,0 +1,29 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body class="bg-gray-900 text-white p-6">
+    <div class="container mx-auto text-center fade-in">
+        <h1 class="text-3xl font-bold">Driver Reports</h1>
+        <div class="mt-6">
+            <div class="card floating p-6">
+                <table class="table-auto w-full border-collapse border border-gray-500">
+                    <tr class="bg-gray-700">
+                        <th class="border border-gray-500 p-2">Driver ID</th>
+                        <th class="border border-gray-500 p-2">Violations</th>
+                        <th class="border border-gray-500 p-2">Date</th>
+                    </tr>
+                    <tr>
+                        <td class="border border-gray-500 p-2">123</td>
+                        <td class="border border-gray-500 p-2">Using Mobile</td>
+                        <td class="border border-gray-500 p-2">02-Mar-2025</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

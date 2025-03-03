@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="p-6">
+        <h1 class="text-3xl font-bold text-center fade-in">Driver Monitoring Dashboard</h1>
+        <div class="flex justify-center mt-8 fade-in">
+            <div class="card floating p-4">
+                <video id="live-feed" class="border-2 border-gray-600 rounded" width="640" height="480" autoplay></video>
+            </div>
+        </div>
+        <div class="mt-6 text-center fade-in">
+            <a href="/alerts" class="bg-red-500 px-4 py-2 rounded text-white button-hover">View Alerts</a>
+            <a href="/reports" class="bg-blue-500 px-4 py-2 rounded text-white button-hover ml-4">View Reports</a>
+        </div>
+    </div>
+</body>
+</html>

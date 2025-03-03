@@ -1,0 +1,44 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #b121a5, #2a5298);
+    perspective: 1000px;
+}
+
+.button-hover:hover {
+    transform: scale(1.05) rotateY(10deg);
+    transition: transform 0.3s ease-in-out;
+}
+
+/* 3D Card Effect */
+.card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    transform-style: preserve-3d;
+}
+
+/* Keyframe Animations */
+@keyframes fadeIn3D {
+    from {
+        opacity: 0;
+        transform: translateY(20px) rotateX(-10deg);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) rotateX(0);
+    }
+}
+.fade-in {
+    animation: fadeIn3D 1s ease-in-out;
+}
+
+@keyframes floatingEffect {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+.floating {
+    animation: floatingEffect 3s ease-in-out infinite;
+}
