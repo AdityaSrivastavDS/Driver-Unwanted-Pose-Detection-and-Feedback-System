@@ -16,5 +16,9 @@ document.addEventListener("DOMContentLoaded", function () {
             card.style.transition = "transform 0.5s ease";
             card.style.transform = "rotateY(0deg) rotateX(0deg)";
         });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log("Script Loaded");
+        });
     });
 });

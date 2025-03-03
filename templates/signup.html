@@ -1,21 +1,23 @@
-
+{% include 'navbar.html' %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Driver Pose Detection</title>
+    <title>Sign Up</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body class="bg-gray-900 text-white">
-    {% include 'navbar.html' %}
     <div class="flex justify-center items-center min-h-screen fade-in">
         <div class="card floating w-96 p-8">
-            <h2 class="text-2xl font-bold text-center mb-6">Login</h2>
-            <form action="/dashboard" method="post" class="space-y-4">
+            <h2 class="text-2xl font-bold text-center mb-6">Sign Up</h2>
+            <form action="/signup" method="post" class="space-y-4">
+                <input type="text" name="name" placeholder="Full Name" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white">
+                <input type="email" name="email" placeholder="Email" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white">
                 <input type="text" name="username" placeholder="Username" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white">
                 <input type="password" name="password" placeholder="Password" class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white">
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white p-2 rounded button-hover">Login</button>
+                <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white p-2 rounded button-hover">Sign Up</button>
+                <p class="text-center text-sm mt-4">Already have an account? <a href="/" class="text-blue-400">Login</a></p>
             </form>
         </div>
     </div>

@@ -1,5 +1,4 @@
-# app.py - Flask Backend
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
@@ -7,13 +6,20 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route('/about')
-def about():
-    return render_template('about.html')
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        # Placeholder for saving user details (can be connected to DB later)
+        return redirect(url_for('index'))
+    return render_template('signup.html')
 
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     return render_template('dashboard.html')
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 @app.route('/alerts')
 def alerts():
