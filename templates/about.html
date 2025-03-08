@@ -1,19 +1,14 @@
-{% include 'navbar.html' %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - Driver Pose Detection</title>
-    <link rel="stylesheet" href="static/css/styles.css">
-</head>
-<body class="bg-gray-900 text-white p-6">
-    <div class="container mx-auto text-center fade-in">
-        <div class="card floating">
-            <h1 class="text-4xl font-bold">About This Project</h1>
-            <p class="mt-4 text-lg">This system monitors driver behavior in real-time, detects distractions, and alerts transport providers.</p>
-            <p class="mt-2">Developed using AI-driven pose detection and deep learning models for enhanced road safety.</p>
-            <a href="/" class="mt-6 inline-block bg-blue-500 px-6 py-2 rounded text-white button-hover">Back to Home</a>
-        </div>
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mx-auto text-center fade-in">
+    <div class="card floating">
+        <h1 class="text-4xl font-bold">About This Project</h1>
+        <p class="mt-4 text-lg">This system monitors driver behavior in real-time, detects distractions, and alerts
+            transport providers.</p>
+        <p class="mt-2">Developed using AI-driven pose detection and deep learning models for enhanced road safety.</p>
+        <a href="/" class="mt-6 inline-block bg-blue-500 px-6 py-2 rounded text-white button-hover">Back to Home</a>
     </div>
-</body>
-</html>
+</div>
+
+{% endblock %}
