@@ -1,96 +1,83 @@
+/* Smooth Transitions */
+/* Body Setup */
+/* Smooth Transitions */
 body {
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #b121a5, #2a5298);
-    perspective: 1000px;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.5s ease-in-out;
 }
 
-.button-hover:hover {
-    transform: scale(1.05) rotateY(10deg);
-    transition: transform 0.3s ease-in-out;
-}
-
-/* 3D Card Effect */
-.card {
+/* Glassmorphism Card */
+.glass-card {
     background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    transform-style: preserve-3d;
+    backdrop-filter: blur(12px);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-/* Keyframe Animations */
-@keyframes fadeIn3D {
-    from {
-        opacity: 0;
-        transform: translateY(20px) rotateX(-10deg);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) rotateX(0);
-    }
-}
-.fade-in {
-    animation: fadeIn3D 1s ease-in-out;
+/* Input Fields */
+.input-field {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    transition: 0.3s;
 }
 
-@keyframes floatingEffect {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-    100% { transform: translateY(0px); }
-}
-.floating {
-    animation: floatingEffect 3s ease-in-out infinite;
+.input-field:focus {
+    background: rgba(255, 255, 255, 0.2);
+    outline: none;
 }
 
-nav {
-    background: linear-gradient(135deg, #1199b1, #076a91);
-    padding: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-}
-.nav-item {
-    display: inline-block;
-    margin: 0 15px;
+/* 3D Button */
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(90deg, #4f46e5, #8b5cf6);
+    border-radius: 8px;
     color: white;
     font-weight: bold;
-    transition: transform 0.3s ease-in-out;
-}
-.nav-item:hover {
-    transform: scale(1.1);
-    text-shadow: 0px 4px 10px rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: transform 0.3s;
 }
 
-.team {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 2rem;
+.btn-primary:hover {
+    transform: scale(1.05);
 }
 
-.team-member {
+/* Hide Default Scrollbar */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+/* Team Card */
+.team-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 15px;
     text-align: center;
-    width: 45%;
+    min-width: 220px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
 }
 
-.team-img {
-    width: 100%;
-    height: auto;
-    border-radius: 50%;
-    transition: transform 0.3s ease-in-out;
-}
-
-.team-img:hover {
+.team-card:hover {
     transform: scale(1.1);
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+/* Circular Team Images with Shadow */
+.team-card img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s;
 }
 
-.animate-fade-in {
-    animation: fadeIn 2s ease-in-out;
+.team-card img:hover {
+    transform: scale(1.15);
 }

@@ -1,24 +1,29 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block content %}
+<section class="flex justify-center items-center h-screen relative">
+    <canvas id="bgCanvas" class="absolute top-0 left-0 w-full h-full"></canvas>
 
-<div class="flex justify-center items-center min-h-screen fade-in">
-    <div class="card floating w-96 p-8">
-        <h2 class="text-2xl font-bold text-center mb-6">Sign Up</h2>
-        <form action="/signup" method="post" class="space-y-4">
-            <input type="text" name="name" placeholder="Full Name"
-                class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white">
-            <input type="email" name="email" placeholder="Email"
-                class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white">
-            <input type="text" name="username" placeholder="Username"
-                class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white">
-            <input type="password" name="password" placeholder="Password"
-                class="w-full p-2 rounded bg-gray-700 border border-gray-600 text-white">
-            <button type="submit"
-                class="w-full bg-green-600 hover:bg-green-700 text-white p-2 rounded button-hover">Sign Up</button>
-            <p class="text-center text-sm mt-4">Already have an account? <a href="/" class="text-blue-400">Login</a></p>
+    <div class="glass-card w-96 relative z-10 flex flex-col items-center">
+        <h2 class="text-3xl font-bold text-center mb-6">🚀 Sign Up</h2>
+
+        <!-- Error Message -->
+        {% if error %}
+        <p class="text-red-400 text-center">{{ error }}</p>
+        {% endif %}
+
+        <form method="POST" id="signup-form" class="w-full flex flex-col">
+            <input type="text" name="name" placeholder="Full Name" class="input-field" required>
+            <input type="text" name="username" placeholder="Username" class="input-field" required>
+            <input type="email" name="email" placeholder="Email" class="input-field" required>
+            <input type="password" name="password" placeholder="Password" class="input-field" required>
+
+            <button type="submit" class="btn-primary">Create Account</button>
         </form>
-    </div>
-</div>
 
+        <p class="text-gray-400 mt-4 text-center">Already have an account? 
+            <a href="{{ url_for('login') }}" class="text-blue-400 hover:underline">Login here</a>
+        </p>
+    </div>
+</section>
 {% endblock %}

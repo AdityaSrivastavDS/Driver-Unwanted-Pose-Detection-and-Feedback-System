@@ -1,16 +1,18 @@
-<nav class="w-full p-4 bg-gradient-to-r from-blue-700 to-indigo-800 shadow-lg">
+<nav class="bg-gray-800 p-4 shadow-md sticky top-0 z-50">
     <div class="container mx-auto flex justify-between items-center">
-        <h1 class="text-white text-2xl font-bold">Driver Pose Detection</h1>
-        <div>
-            <a href="/" class="nav-item">Home</a>
-            <a href = "/information" class="nav-item">Information</a>
-            <a href="/about" class="nav-item">About</a>
-            <a href = "/login" class = "nav-item">Login</a>
-            <a href = "/signup" class = "nav-item">Sign Up</a>
-            <a href="/dashboard" class="nav-item">Dashboard</a>
-            <a href="/alerts" class="nav-item">Alerts</a>
-            <a href="/reports" class="nav-item">Reports</a>
-            
-        </div>
+        <a href="{{ url_for('index') }}" class="text-xl font-semibold tracking-wide">
+            🚀 PoseGuard
+        </a>
+
+        <ul class="flex space-x-6">
+            <li><a href="{{ url_for('dashboard') }}" class="hover:text-gray-300 transition">Dashboard</a></li>
+            <li><a href="{{ url_for('reports') }}" class="hover:text-gray-300 transition">Reports</a></li>
+            <li><a href="{{ url_for('alerts') }}" class="hover:text-gray-300 transition">Alerts</a></li>
+            <li><a href="{{ url_for('about') }}" class="hover:text-gray-300 transition">About</a></li>
+            <li><a href="{{ url_for('information') }}" class="hover:text-gray-300 transition">Information</li>
+            <li><a href="{{ url_for('login') }}" class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg shadow">
+                Login
+            </a></li>
+        </ul>
     </div>
 </nav>

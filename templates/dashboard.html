@@ -1,18 +1,20 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block content %}
-
-<div class="p-6">
-    <h1 class="text-3xl font-bold text-center fade-in">Driver Monitoring Dashboard</h1>
-    <div class="flex justify-center mt-8 fade-in">
-        <div class="card floating p-4">
-            <video id="live-feed" class="border-2 border-gray-600 rounded" width="640" height="480" autoplay></video>
-        </div>
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="dashboard-card">
+        <h2 class="text-xl font-semibold">🚗 Live Monitoring</h2>
+        <p class="text-gray-400 mt-2">Track driver activities in real-time.</p>
     </div>
-    <div class="mt-6 text-center fade-in">
-        <a href="/alerts" class="bg-red-500 px-4 py-2 rounded text-white button-hover">View Alerts</a>
-        <a href="/reports" class="bg-blue-500 px-4 py-2 rounded text-white button-hover ml-4">View Reports</a>
-    </div>
-</div>
 
+    <div class="dashboard-card">
+        <h2 class="text-xl font-semibold">📊 AI Reports</h2>
+        <p class="text-gray-400 mt-2">View real-time AI-generated reports.</p>
+    </div>
+
+    <div class="dashboard-card">
+        <h2 class="text-xl font-semibold">🛠 System Status</h2>
+        <p class="text-gray-400 mt-2">Everything is running smoothly.</p>
+    </div>
+</section>
 {% endblock %}

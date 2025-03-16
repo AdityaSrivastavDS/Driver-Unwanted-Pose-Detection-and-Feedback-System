@@ -1,12 +1,30 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+
 {% block content %}
+<section class="py-12">
+    <h1 class="text-4xl font-bold text-center mb-6">🔔 Alerts & Notifications</h1>
 
-<div class="container mx-auto text-center fade-in">
-    <h1 class="text-3xl font-bold">Driver Alerts</h1>
-    <div class="mt-6">
-        <div class="card floating p-4 bg-red-600 text-white">Alert: Driver looking away for 3 seconds</div>
-        <div class="card floating p-4 bg-yellow-500 text-black mt-4">Warning: Possible drowsiness detected</div>
+    <div class="alert-container">
+        <div class="alert success">
+            <p>✅ System is running smoothly.</p>
+            <button class="close-alert">✖</button>
+        </div>
+        <div class="alert warning">
+            <p>⚠️ High driver distraction detected!</p>
+            <button class="close-alert">✖</button>
+        </div>
+        <div class="alert error">
+            <p>❌ API connection lost. Try again later.</p>
+            <button class="close-alert">✖</button>
+        </div>
     </div>
-</div>
+</section>
 
+<script>
+document.querySelectorAll('.close-alert').forEach(btn => {
+    btn.addEventListener('click', () => {
+        btn.parentElement.style.display = 'none';
+    });
+});
+</script>
 {% endblock %}

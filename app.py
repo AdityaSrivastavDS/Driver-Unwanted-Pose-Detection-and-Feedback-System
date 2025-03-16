@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 import bcrypt   
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 db = SQLAlchemy(app)
@@ -25,49 +26,54 @@ class User(db.Model):
 with app.app_context():
     db.create_all()
 
-
-
 @app.route('/')
 def index():
     return render_template('index.html')
 
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        name = request.form['name']
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+
+        user = User.query.filter((User.username == username) | (User.email == email)).first()
+        if user:
+            return render_template('signup.html', error="Username or Email already exists!")
+
+        new_user = User(name, username, email, password)
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect(url_for('login'))
+
+    return render_template('signup.html')
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        # Placeholder for validating user credentials (can be connected to DB later)
         email_or_username = request.form['username']
         password = request.form['password']
-        user = User.query.filter_by(username=email_or_username).first() or User.query.filter_by(email=email_or_username).first()
+        user = User.query.filter((User.username == email_or_username) | (User.email == email_or_username)).first()
+        
         if user and user.check_password(password):
             session['user'] = user.email
             return redirect(url_for('dashboard'))
         else:
             return render_template('login.html', error="Invalid credentials")
+
     return render_template('login.html')
 
-@app.route('/signup', methods=['GET', 'POST'])
-def signup():
-    if request.method == 'POST':
-        # Placeholder for saving user details (can be connected to DB later)
-        name = request.form['name']
-        username = request.form['username']
-        email = request.form['email']
-        password = request.form['password']
-        try:
-            user = User.query.filter_by(username=username).first() or User.query.filter_by(email=email).first()
-            if user:
-                return render_template('signup.html', error="User already exists")
-        except:
-            pass
-        user = User(name, username, email, password)
-        db.session.add(user)
-        db.session.commit()
-        return redirect("/login")
-    return render_template('signup.html')
-
-@app.route('/dashboard', methods=['GET', 'POST'])
+@app.route('/dashboard')
 def dashboard():
+    if 'user' not in session:
+        return redirect(url_for('login'))
     return render_template('dashboard.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    return redirect(url_for('index'))
 
 @app.route('/about')
 def about():

@@ -1,24 +1,25 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block content %}
-<div class="container mx-auto text-center fade-in">
-    <h1 class="text-3xl font-bold">Driver Reports</h1>
-    <div class="mt-6">
-        <div class="card floating p-6">
-            <table class="table-auto w-full border-collapse border border-gray-500">
-                <tr class="bg-gray-700">
-                    <th class="border border-gray-500 p-2">Driver ID</th>
-                    <th class="border border-gray-500 p-2">Violations</th>
-                    <th class="border border-gray-500 p-2">Date</th>
-                </tr>
-                <tr>
-                    <td class="border border-gray-500 p-2">123</td>
-                    <td class="border border-gray-500 p-2">Using Mobile</td>
-                    <td class="border border-gray-500 p-2">02-Mar-2025</td>
-                </tr>
-            </table>
-        </div>
-    </div>
-</div>
+<section class="text-center py-12">
+    <h1 class="text-4xl font-bold mb-6">📊 AI Reports & Insights</h1>
+    <canvas id="reportChart"></canvas>
+</section>
 
+<!-- Chart.js Script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('reportChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Drowsiness', 'Distraction', 'Safe Driving'],
+            datasets: [{
+                label: 'Driver Behavior',
+                data: [12, 19, 35],
+                backgroundColor: ['#F87171', '#FBBF24', '#34D399']
+            }]
+        }
+    });
+</script>
 {% endblock %}
