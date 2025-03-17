@@ -1,25 +1,31 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block content %}
-<section class="text-center py-12">
-    <h1 class="text-4xl font-bold mb-6">📊 AI Reports & Insights</h1>
-    <canvas id="reportChart"></canvas>
-</section>
+<div class="container mx-auto px-6 py-10">
+    <h1 class="text-4xl font-bold text-center text-blue-400 mb-6" id="reportTitle">Reports</h1>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg opacity-0 transform scale-90 report-card">
+            <h2 class="text-xl font-semibold text-blue-300">Report 1</h2>
+            <p class="text-gray-400 mt-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+        
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg opacity-0 transform scale-90 report-card">
+            <h2 class="text-xl font-semibold text-blue-300">Report 2</h2>
+            <p class="text-gray-400 mt-2">Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
 
-<!-- Chart.js Script -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg opacity-0 transform scale-90 report-card">
+            <h2 class="text-xl font-semibold text-blue-300">Report 3</h2>
+            <p class="text-gray-400 mt-2">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+        </div>
+    </div>
+</div>
+
 <script>
-    const ctx = document.getElementById('reportChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Drowsiness', 'Distraction', 'Safe Driving'],
-            datasets: [{
-                label: 'Driver Behavior',
-                data: [12, 19, 35],
-                backgroundColor: ['#F87171', '#FBBF24', '#34D399']
-            }]
-        }
+    document.addEventListener("DOMContentLoaded", function () {
+        gsap.from("#reportTitle", { duration: 1, opacity: 0, y: -50, ease: "power3.out" });
+        gsap.to(".report-card", { duration: 1, opacity: 1, scale: 1, stagger: 0.3, ease: "power3.out" });
     });
 </script>
 {% endblock %}
