@@ -1,15 +1,305 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Unwanted Pose Detection</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Custom CSS */
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
 
-{% block content %}
-<section class="flex flex-col items-center justify-center h-screen text-center">
-    <h1 class="text-5xl font-extrabold tracking-tight animate-fadeIn">
-        Welcome to <span class="text-blue-400">PoseGuard</span>
-    </h1>
-    <p class="mt-4 text-lg text-gray-300 animate-slideIn">AI-powered driver monitoring for a safer world.</p>
+        .hero-section {
+            background-image: url('https://usagif.com/wp-content/uploads/gifs/car-driving-65.gif'); /* Replace with your image */
+            background-size: cover;
+            background-position: center;
+            height: 80vh;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 2s ease-in-out;
+        }
 
-    <div class="mt-6 flex space-x-4">
-        <a href="{{ url_for('signup') }}" class="btn-primary transform hover:scale-110 transition-all">Get Started 🚀</a>
-        <a href="{{ url_for('about') }}" class="btn-secondary transform hover:scale-110 transition-all">Learn More</a>
-    </div>
-</section>
-{% endblock %}
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .hero-section h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            animation: slideIn 1.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            0% {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .btn-custom {
+            background-color: #FF6F61;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-custom:hover {
+            background-color: #FF3B2F;
+            cursor: pointer;
+        }
+
+        .category-box {
+            background-color: #16cce4;
+            padding: 40px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .category-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .category-box h5 {
+            font-weight: 600;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .card-custom {
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
+        }
+
+        .card-custom:hover {
+            transform: translateY(-10px);
+        }
+
+        .fact-box {
+            background-color: #343a40;
+            color: white;
+            padding: 40px;
+            margin-top: 60px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .fact-box h2 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+        }
+
+        .fact-box .row div {
+            transition: transform 0.3s ease;
+        }
+
+        .fact-box .row div:hover {
+            transform: translateY(-10px);
+        }
+
+        footer {
+            background-color: #343a40;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        footer a {
+            color: #FF6F61;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            margin-bottom: 15px;
+            transition: border 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #FF6F61;
+            box-shadow: 0 0 5px rgba(255, 111, 97, 0.5);
+        }
+
+        .submit-btn {
+            background-color: #FF6F61;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #FF3B2F;
+        }
+    </style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div>
+            <h1>Welcome to Driver Pose Detection</h1>
+            <p>Ensure driver safety with our real-time unwanted pose detection system</p>
+            <a href="login" class="btn btn-custom">Get Started</a>
+        </div>
+    </section>
+
+    <!-- Pose Categories -->
+    <section class="container my-5">
+        <div class="row text-center">
+            <div class="col-md-4">
+                <div class="category-box">
+                    <h5>Alert Pose</h5>
+                    <p>Stay alert and focused for safe driving</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="category-box">
+                    <h5>Unwanted Pose</h5>
+                    <p>Detection of drowsy or distracted driving behavior</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="category-box">
+                    <h5>Safe Driving Pose</h5>
+                    <p>Recognizing optimal posture for safe driving</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent Pose Detection Results -->
+    <section class="container my-5">
+        <h2 class="text-center mb-4">Pose Detection Alerts</h2>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card card-custom">
+                    <img src="https://macgence.com/wp-content/uploads/2024/03/DAWS-scaled.webp" class="card-img-top" alt="Alert Pose">
+                    <div class="card-body">
+                        <h5 class="card-title">Unwanted Pose Detected</h5>
+                        <p class="card-text">Driver detected in a risky posture. Immediate alert triggered.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-custom">
+                    <img src="https://static.vecteezy.com/system/resources/previews/003/147/450/non_2x/best-and-worst-positions-for-driving-a-car-vector.jpg" class="card-img-top" alt="Alert Pose">
+                    <div class="card-body">
+                        <h5 class="card-title">Alert Pose Detected</h5>
+                        <p class="card-text">Driver is in a focused and alert posture. All systems normal.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-custom">
+                    <img src="https://media.istockphoto.com/id/1163597718/photo/photo-of-a-business-woman-sitting-in-a-car-putting-on-her-seat-belt.jpg?s=612x612&w=0&k=20&c=P_81NXtrV6mLX7GvjtUn1mXY2OcSTBpE0dLrL10YUw8=" class="card-img-top" alt="Alert Pose">
+                    <div class="card-body">
+                        <h5 class="card-title">Safety Posture Recognized</h5>
+                        <p class="card-text">Driver is maintaining optimal posture for safe driving.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-custom">
+                    <img src="https://img.freepik.com/free-photo/looking-astonished-disbelief_1194-413890.jpg" class="card-img-top" alt="Alert Pose">
+                    <div class="card-body">
+                        <h5 class="card-title">Driver Pose Alert</h5>
+                        <p class="card-text">Warning: Driver exhibiting signs of fatigue. Monitoring active.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Facts About the System -->
+    <section class="fact-box">
+        <div class="container">
+            <h2>A Few Facts About Our System</h2>
+            <div class="row text-center">
+                <div class="col-md-3">
+                    <h4>98%</h4>
+                    <p>Detection Accuracy</p>
+                </div>
+                <div class="col-md-3">
+                    <h4>10,000+</h4>
+                    <p>Drivers Monitored</p>
+                </div>
+                <div class="col-md-3">
+                    <h4>50+</h4>
+                    <p>Real-Time Alerts</p>
+                </div>
+                <div class="col-md-3">
+                    <h4>5</h4>
+                    <p>Different Pose Categories</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Us Section -->
+    <section class="container my-5">
+        <h2 class="text-center mb-4">Get In Touch</h2>
+        <form>
+            <div class="mb-3">
+                <label for="name" class="form-label">Your Name</label>
+                <input type="text" class="form-control" id="name" placeholder="Enter your name">
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Your Email</label>
+                <input type="email" class="form-control" id="email" placeholder="Enter your email">
+            </div>
+            <div class="mb-3">
+                <label for="message" class="form-label">Your Message</label>
+                <textarea class="form-control" id="message" rows="3" placeholder="Enter your message"></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Send Message</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Driver Pose Detection System. All rights reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
