@@ -1,3 +1,7 @@
 flask
 flask_sqlalchemy
 bcrypt
+tensorflow
+cv2
+datetime
+threading

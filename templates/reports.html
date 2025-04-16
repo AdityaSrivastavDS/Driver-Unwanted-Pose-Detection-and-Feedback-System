@@ -2,24 +2,21 @@
 
 {% block content %}
 <div class="container mx-auto px-6 py-10">
-    <h1 class="text-4xl font-bold text-center text-blue-400 mb-6" id="reportTitle">Reports</h1>
+    <h1 class="text-4xl font-bold text-center text-blue-400 mb-6" id="reportTitle">AI Alert Reports</h1>
     
+    {% if alerts %}
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for alert in alerts %}
         <div class="bg-gray-800 p-6 rounded-lg shadow-lg opacity-0 transform scale-90 report-card">
-            <h2 class="text-xl font-semibold text-blue-300">Report 1</h2>
-            <p class="text-gray-400 mt-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <h2 class="text-xl font-semibold text-blue-300">🚨 {{ alert.alert_type }}</h2>
+            <p class="text-gray-400 mt-2">Detected for: <span class="text-white font-semibold">{{ alert.user_email }}</span></p>
+            <p class="text-gray-500 mt-1 text-sm">At: {{ alert.timestamp.strftime("%Y-%m-%d %H:%M:%S") }}</p>
         </div>
-        
-        <div class="bg-gray-800 p-6 rounded-lg shadow-lg opacity-0 transform scale-90 report-card">
-            <h2 class="text-xl font-semibold text-blue-300">Report 2</h2>
-            <p class="text-gray-400 mt-2">Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        </div>
-
-        <div class="bg-gray-800 p-6 rounded-lg shadow-lg opacity-0 transform scale-90 report-card">
-            <h2 class="text-xl font-semibold text-blue-300">Report 3</h2>
-            <p class="text-gray-400 mt-2">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
-        </div>
+        {% endfor %}
     </div>
+    {% else %}
+    <p class="text-gray-400 text-center text-lg">No alerts have been recorded yet. Monitoring is active...</p>
+    {% endif %}
 </div>
 
 <script>

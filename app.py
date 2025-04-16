@@ -1,14 +1,21 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 import bcrypt   
+from flask import Response
+from pose_detection import detect_pose
+import cv2
+from playsound import playsound
+from threading import Thread
+from datetime import datetime
 
 
 app = Flask(__name__)
-
+camera = cv2.VideoCapture(0)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 db = SQLAlchemy(app)
 app.secret_key = 'secret_key'
+
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -25,9 +32,53 @@ class User(db.Model):
         
     def check_password(self, password):
         return bcrypt.checkpw(password.encode("utf-8"), self.password.encode("utf-8"))
+    
+class Alert(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    alert_type = db.Column(db.String(100), nullable=False)
+    user_email = db.Column(db.String(120), nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __init__(self, alert_type, user_email):
+        self.alert_type = alert_type
+        self.user_email = user_email
 
 with app.app_context():
     db.create_all()
+
+
+def gen_frames():
+    while True:
+        success, frame = camera.read()
+        if not success:
+            break
+
+        # STEP 1: Run frame through your model
+        if detect_pose(frame):  # Now returns a boolean
+            # STEP 2: Log alert here
+            email = session.get('user', 'unknown')
+            new_alert = Alert(alert_type="Unwanted Pose Detected", user_email=email)
+            db.session.add(new_alert)
+            db.session.commit()
+
+            # STEP 3: Optional - Play audio
+            from playsound import playsound
+            playsound("static/resources/alert.mp3")
+
+        # Stream frame to frontend
+        ret, buffer = cv2.imencode('.jpg', frame)
+        frame = buffer.tobytes()
+
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+
+
+@app.route('/video_feed')
+def video_feed():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/')
 def index():
@@ -92,7 +143,11 @@ def alerts():
 
 @app.route('/reports')
 def reports():
-    return render_template('reports.html')
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    alerts = Alert.query.order_by(Alert.timestamp.desc()).all()
+    return render_template('reports.html', alerts=alerts)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
