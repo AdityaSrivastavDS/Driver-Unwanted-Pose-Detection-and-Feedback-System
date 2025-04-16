@@ -2,26 +2,29 @@ import cv2
 import numpy as np
 from tensorflow.keras.models import load_model
 
-model = load_model('model/cnn_unwanted_pose.h5')
-model.summary()
+# Load model only once when module is imported
+model = load_model('model/poseguard_model.h5')
+
+# Class labels for your model's output
+class_labels = ['Drinking', 'Phone Call (Left)', 'Phone Call (Right)', 'Smoking',
+                'Safe Driving', 'Texting (Left)', 'Texting (Right)', 'Hair and Makeup']
+
+# Define unwanted classes
+unwanted_classes = ['Drinking', 'Phone Call (Left)', 'Phone Call (Right)', 
+                    'Smoking', 'Texting (Left)', 'Texting (Right)', 'Hair and Makeup']
 
 def preprocess_frame(frame):
-    # Resize to match the model's expected input (128x128)
+    frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
     resized = cv2.resize(frame, (128, 128))
-
-    # Normalize pixel values
     norm = resized.astype('float32') / 255.0
-
-    # Add batch dimension: (1, 128, 128, 3)
     return np.expand_dims(norm, axis=0)
 
-
 def detect_pose(frame):
-    img = cv2.resize(frame, (128, 128))           # Resize to match model input
-    img = img.astype("float32") / 255.0           # Normalize
-    img = np.expand_dims(img, axis=0)             # Add batch dimension
-    prediction = model.predict(img)[0]            # Predict
+    img = preprocess_frame(frame)
+    prediction = model.predict(img)[0]
+    pred_class = np.argmax(prediction)
+    class_name = class_labels[pred_class]
+    confidence = prediction[pred_class]
 
-    # Assuming the model outputs probabilities for classes
-    unwanted_pose_threshold = 0.5                 # Define a threshold
-    return prediction[0] > unwanted_pose_threshold  # Return True if unwanted pose detected
+    is_unwanted = class_name in unwanted_classes and confidence > 0.7
+    return is_unwanted, class_name, confidence

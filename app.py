@@ -47,25 +47,29 @@ with app.app_context():
     db.create_all()
 
 
-def gen_frames():
+def gen_frames(user_email):
     while True:
         success, frame = camera.read()
         if not success:
             break
 
-        # STEP 1: Run frame through your model
-        if detect_pose(frame):  # Now returns a boolean
-            # STEP 2: Log alert here
-            email = session.get('user', 'unknown')
-            new_alert = Alert(alert_type="Unwanted Pose Detected", user_email=email)
-            db.session.add(new_alert)
-            db.session.commit()
+        is_unwanted, class_name, confidence = detect_pose(frame)
 
-            # STEP 3: Optional - Play audio
-            from playsound import playsound
-            playsound("static/resources/alert.mp3")
+        if is_unwanted:
+            with app.app_context():  # 👈 FIX
+                new_alert = Alert(alert_type=f"Unwanted Pose Detected ({class_name})", user_email=user_email)
+                db.session.add(new_alert)
+                db.session.commit()
 
-        # Stream frame to frontend
+            try:
+                playsound("static/resources/alert.mp3")
+            except Exception as e:
+                print("Sound alert error:", e)
+
+        label = f"{class_name}: {confidence * 100:.2f}%"
+        cv2.putText(frame, label, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.9,
+                    (0, 0, 255) if is_unwanted else (0, 255, 0), 2)
+
         ret, buffer = cv2.imencode('.jpg', frame)
         frame = buffer.tobytes()
 
@@ -78,7 +82,10 @@ def gen_frames():
 def video_feed():
     if 'user' not in session:
         return redirect(url_for('login'))
-    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    user_email = session.get('user')
+    return Response(gen_frames(user_email), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
 
 @app.route('/')
 def index():
