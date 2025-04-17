@@ -148,6 +148,10 @@ def information():
 def alerts():
     return render_template('alerts.html')
 
+@app.route('/admin_portal')
+def admin_portal():
+    return render_template('admin_portal.html')
+
 @app.route('/reports')
 def reports():
     if 'user' not in session:
