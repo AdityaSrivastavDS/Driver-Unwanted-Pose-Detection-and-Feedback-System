@@ -3,7 +3,8 @@
 {% block content %}
 <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-    <!-- Live Monitoring with camera feed -->
+    <!-- Live Monitoring with camera feed (visible only to non-admin users) -->
+    {% if not is_admin %}
     <div class="dashboard-card col-span-1 md:col-span-2 lg:col-span-2">
         <h2 class="text-xl font-semibold">🚗 Live Monitoring</h2>
         <p class="text-gray-400 mt-2 mb-4">Track driver activities in real-time.</p>
@@ -11,6 +12,12 @@
             <img src="{{ url_for('video_feed') }}" class="w-full" alt="Live Stream">
         </div>
     </div>
+    {% else %}
+    <div class="dashboard-card col-span-1 md:col-span-2 lg:col-span-2">
+        <h2 class="text-xl font-semibold">🚫 Live Monitoring Disabled</h2>
+        <p class="text-gray-400 mt-2 mb-4">Admins do not have access to live camera monitoring.</p>
+    </div>
+    {% endif %}
 
     <!-- System Status -->
     <div class="dashboard-card">

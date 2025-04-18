@@ -7,6 +7,7 @@ from threading import Thread
 from datetime import datetime
 import os
 from pose_detection import detect_pose
+from flask import abort
 
 app = Flask(__name__)
 camera = cv2.VideoCapture(0)
@@ -100,10 +101,15 @@ def gen_frames(user_email):
 def video_feed():
     if 'user' not in session:
         return redirect(url_for('login'))
+    
     user_email = session.get('user')
-    if user_email.endswith("@poseguard.com"):
-        return "Admins are not allowed to access live feed."
+    
+    # ❌ Prevent admin from running video feed
+    if user_email.endswith('@poseguard.com'):
+        return "Admins do not have access to live video feed."
+
     return Response(gen_frames(user_email), mimetype='multipart/x-mixed-replace; boundary=frame')
+
 
 @app.route('/')
 def index():
@@ -145,11 +151,15 @@ def login():
 
     return render_template('login.html')
 
+# In app.py
 @app.route('/dashboard')
 def dashboard():
     if 'user' not in session:
         return redirect(url_for('login'))
-    return render_template('dashboard.html')
+    user_email = session.get('user')
+    is_admin = user_email.endswith('@poseguard.com')
+    return render_template('dashboard.html', is_admin=is_admin)
+
 
 @app.route('/logout')
 def logout():
@@ -169,21 +179,28 @@ def information():
 def alerts():
     return redirect(url_for('login'))
 
-@app.route('/admin_portal')
+@app.route('/admin')
 def admin_portal():
-    if not session.get('admin'):
-        return redirect(url_for('login'))
-    screenshots = ScreenshotAlert.query.order_by(ScreenshotAlert.timestamp.desc()).all()
-    return render_template('admin_portal.html', screenshots=screenshots)
+    if 'user' not in session or not session['user'].endswith('@poseguard.com'):
+        abort(403)
+    
+    # Fetch screenshot alerts
+    all_screenshots = ScreenshotAlert.query.order_by(ScreenshotAlert.timestamp.desc()).all()
+    
+    return render_template('admin_portal.html', screenshots=all_screenshots)
+
 
 @app.route('/reports')
 def reports():
-    if 'user' not in session or not session.get('admin'):
-        return redirect(url_for('login'))
-    alerts = Alert.query.order_by(Alert.timestamp.desc()).all()
-    return render_template('reports.html', alerts=alerts)
+    if 'user' not in session or not session['user'].endswith('@poseguard.com'):
+        abort(403)
+    # your report logic
+    return render_template('reports.html')
+
+@app.errorhandler(403)
+def forbidden(e):
+    return render_template('403.html'), 403
+
 
 if __name__ == '__main__':
-    if not os.path.exists('static/screenshots'):
-        os.makedirs('static/screenshots')
     app.run(debug=True)
