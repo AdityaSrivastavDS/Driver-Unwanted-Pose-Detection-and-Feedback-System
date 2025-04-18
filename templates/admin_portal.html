@@ -1,47 +1,15 @@
-{% extends 'base.html' %}
-
+{% extends "base.html" %}
 {% block content %}
+<h1 class="text-3xl font-bold mb-4">📸 Admin Monitoring Portal</h1>
 
-<div class="mt-8">
-    <h1 class="text-4xl font-bold mb-6">Admin Portal</h1>
-    <p class="text-gray-400 mb-8">Manage your application settings and user data.</p>
-
-    <div class="bg-white shadow-md rounded-lg p-6">
-        <h2 class="text-2xl font-semibold mb-4">User Management</h2>
-        <table class="min-w-full bg-white border border-gray-200">
-            <thead>
-                <tr>
-                    <th class="py-2 px-4 border-b">User ID</th>
-                    <th class="py-2 px-4 border-b">Username</th>
-                    <th class="py-2 px-4 border-b">Email</th>
-                    <th class="py-2 px-4 border-b">Actions</th>
-                </tr>
-            </thead>
-            <tbody id="userTableBody">
-                <!-- User data will be populated here -->
-            </tbody>
-        </table>
-    </div>
-
-    <div class="mt-8">
-        <h2 class="text-2xl font-semibold mb-4">Settings</h2>
-        <!-- Settings form goes here -->
-    </div>
-
-    <div class="mt-8">
-        <h2 class="text-2xl font-semibold mb-4">Logs</h2>
-        <table class="min-w-full bg-white border border-gray-200">
-            <thead>
-                <tr>
-                    <th class="py-2 px-4 border-b">Log ID</th>
-                    <th class="py-2 px-4 border-b">Timestamp</th>
-                    <th class="py-2 px-4 border-b">Message</th>
-                </tr>
-            </thead>
-            <tbody id="logTableBody">
-                <!-- Log data will be populated here -->
-            </tbody>
-        </table>
-    </div>
-
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+  {% for shot in screenshots %}
+  <div class="bg-gray-800 p-4 rounded shadow-lg">
+    <img src="{{ url_for('static', filename=shot.image_path.split('static/')[1]) }}" class="w-full h-48 object-cover rounded mb-2">
+    <p><strong>User:</strong> {{ shot.user_email }}</p>
+    <p><strong>Type:</strong> {{ shot.alert_type }}</p>
+    <p class="text-sm text-gray-400">{{ shot.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+  </div>
+  {% endfor %}
+</div>
 {% endblock %}

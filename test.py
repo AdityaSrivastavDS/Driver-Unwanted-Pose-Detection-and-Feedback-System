@@ -58,9 +58,9 @@ if uploaded_file is not None:
 
         if pred_class != 0:
             st.error("❌ Unwanted pose detected!")
-            if os.path.exists("static/resources/alert.mp3"):
+            if os.path.exists("static/resources/random_alert.mp3"):
                 try:
-                    playsound("static/resources/alert.mp3")
+                    playsound("static/resources/random_alert.mp3")
                 except Exception as e:
                     st.warning(f"Sound error: {e}")
         else:
