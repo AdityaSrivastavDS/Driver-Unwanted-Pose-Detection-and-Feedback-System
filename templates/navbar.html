@@ -1,24 +1,83 @@
-<nav class="bg-gray-800 p-4 shadow-md sticky top-0 z-50">
+<!-- filepath: a:\Aditya\Pojects\BCA(DS and AI) Final Year Project\Driver Unwanted Pose Detection and Feedback System\templates\navbar.html -->
+<nav class="navbar">
     <div class="container mx-auto flex justify-between items-center">
-        <a href="{{ url_for('index') }}" class="text-xl font-semibold tracking-wide">
+        <a href="{{ url_for('index') }}" class="navbar-brand">
             🚀 PoseGuard
         </a>
 
-        <ul class="flex space-x-6">
-            <li><a href="{{ url_for('dashboard') }}" class="hover:text-gray-300 transition">Dashboard</a></li>
-            <li><a href="{{ url_for('reports') }}" class="hover:text-gray-300 transition">Reports</a></li>
-            <li><a href="{{ url_for('about') }}" class="hover:text-gray-300 transition">About</a></li>
-            <li><a href="{{ url_for('information') }}" class="hover:text-gray-300 transition">Information</a></li>
-            
+        <ul class="navbar-links">
+            <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('reports') }}">Reports</a></li>
+            <li><a href="{{ url_for('about') }}">About</a></li>
+            <li><a href="{{ url_for('information') }}">Information</a></li>
+
             {% if session.get('user') %}
-                <li><a href="{{ url_for('logout') }}" class="hover:text-gray-300 transition text-red-400">Logout</a></li>
+                <li><a href="{{ url_for('logout') }}" class="logout-link">Logout</a></li>
             {% else %}
-                <li><a href="{{ url_for('login') }}" class="hover:text-gray-300 transition">Login</a></li>
+                <li><a href="{{ url_for('login') }}">Login</a></li>
             {% endif %}
-            
+
             {% if session.get('admin') %}
-                <li><a href="{{ url_for('admin_portal') }}" class="hover:text-gray-300 transition">Admin Portal</a></li>
+                <li><a href="{{ url_for('admin_portal') }}">Admin Portal</a></li>
             {% endif %}
         </ul>
     </div>
 </nav>
+
+<style>
+    /* Dark Neon Theme for Navbar */
+    .navbar {
+        background: linear-gradient(145deg, #1a1a1a, #0d0d0d); /* 3D effect */
+        padding: 15px 30px;
+        box-shadow: 0 10px 30px rgba(0, 255, 204, 0.3), inset 0 0 10px #00ffcc;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+    }
+
+    .navbar-brand {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #00ffcc; /* Neon green */
+        text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+        transition: transform 0.3s ease;
+    }
+
+    .navbar-brand:hover {
+        transform: scale(1.1);
+        text-shadow: 0 0 20px #00ffcc, 0 0 40px #00ffcc;
+    }
+
+    .navbar-links {
+        display: flex;
+        gap: 20px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .navbar-links a {
+        color: #ff00ff; /* Neon pink */
+        font-weight: 600;
+        text-decoration: none;
+        text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
+        transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .navbar-links a:hover {
+        color: #00ffcc; /* Neon green on hover */
+        text-shadow: 0 0 20px #00ffcc, 0 0 40px #00ffcc;
+        transform: scale(1.1);
+    }
+
+    .logout-link {
+        color: #ff4d4d; /* Neon red for logout */
+        text-shadow: 0 0 10px #ff4d4d, 0 0 20px #ff4d4d;
+    }
+
+    .logout-link:hover {
+        color: #ff0000; /* Brighter neon red on hover */
+        text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000;
+        transform: scale(1.1);
+    }
+</style>

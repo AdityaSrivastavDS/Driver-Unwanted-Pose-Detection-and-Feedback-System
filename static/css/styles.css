@@ -76,34 +76,59 @@ body {
     background-color: #555;
 }
 
-/* Team Card Image */
-.team-card img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    box-shadow: 0 0 15px #00f7ff;
-    transition: transform 0.3s ease;
+/* Center the Team Section */
+#teamScroll {
+    justify-content: center; /* Center the team cards horizontally */
+    display: flex; /* Ensure flexbox layout */
+    overflow-x: auto; /* Allow horizontal scrolling if needed */
+    padding: 20px 0; /* Add padding for spacing */
 }
 
-.team-card img:hover {
-    transform: scale(1.1);
+/* Team Card Styling */
+.team-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content inside the card */
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.8); /* Darker background for better contrast */
+    border: 1px solid #00f7ff; /* Glowing border */
+    box-shadow: 0 0 20px #00f7ff, 0 0 30px #00f7ff;
+    padding: 20px;
+    border-radius: 15px;
+    width: 350px; /* Increase card width */
+    height: 350px; /* Increase card height */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin: 0 15px; /* Add spacing between cards */
 }
 
 .team-card:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
+    box-shadow: 0 0 30px #00f7ff, 0 0 40px #00f7ff, 0 0 50px #00f7ff;
 }
 
-/* Circular Team Images with Shadow */
+/* Team Card Image Styling */
 .team-card img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s;
+    width: 200px; /* Increase image size */
+    height: 200px; /* Maintain aspect ratio */
+    border-radius: 50%; /* Circular images */
+    object-fit: contain; /* Ensure the image fits properly within the circle */
+    object-position: center; /* Center the image vertically and horizontally */
+    box-shadow: 0 0 15px #f31a0b;
+    transition: transform 0.3s ease;
+    margin-bottom: 15px; /* Add spacing below the image */
 }
 
 .team-card img:hover {
-    transform: scale(1.15);
+    transform: scale(1.1);
+}
+
+/* Center the Entire Section */
+section.text-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the section content */
+    justify-content: center;
+    text-align: center;
 }
 
 
