@@ -2,7 +2,7 @@ flask
 flask_sqlalchemy
 bcrypt
 tensorflow
-cv2
+opencv-python
 datetime
 threading
 playsound
