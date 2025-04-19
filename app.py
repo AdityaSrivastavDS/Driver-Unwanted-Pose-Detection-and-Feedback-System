@@ -175,9 +175,6 @@ def about():
 def information():
     return render_template('information.html')
 
-@app.route('/alerts')
-def alerts():
-    return redirect(url_for('login'))
 
 @app.route('/admin')
 def admin_portal():
