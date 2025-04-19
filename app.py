@@ -185,17 +185,21 @@ def admin_portal():
         abort(403)
     
     # Fetch screenshot alerts
-    all_screenshots = ScreenshotAlert.query.order_by(ScreenshotAlert.timestamp.desc()).all()
+    shots = ScreenshotAlert.query.order_by(ScreenshotAlert.timestamp.desc()).all()
     
-    return render_template('admin_portal.html', screenshots=all_screenshots)
+    return render_template('admin_portal.html', shots=shots)
 
 
 @app.route('/reports')
 def reports():
     if 'user' not in session or not session['user'].endswith('@poseguard.com'):
         abort(403)
-    # your report logic
-    return render_template('reports.html')
+    
+    # Fetch alerts and screenshots
+    alerts = Alert.query.order_by(Alert.timestamp.desc()).all()
+    screenshots = ScreenshotAlert.query.order_by(ScreenshotAlert.timestamp.desc()).all()
+    
+    return render_template('reports.html', alerts=alerts, screenshots=screenshots)
 
 @app.errorhandler(403)
 def forbidden(e):
@@ -203,4 +207,6 @@ def forbidden(e):
 
 
 if __name__ == '__main__':
+    if not os.path.exists('static/screenshots'):
+        os.makedirs('static/screenshots')
     app.run(debug=True)

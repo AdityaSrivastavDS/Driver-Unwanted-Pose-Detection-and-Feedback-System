@@ -3,7 +3,8 @@
 {% block content %}
 <h2 class="text-2xl font-bold mb-4">Unwanted Pose Screenshots</h2>
 
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="scrollable-section grid grid-cols-1 md:grid-cols-3 gap-4">
+    {% for shot in shots %}
     <div class="bg-white rounded shadow p-4">
         <img src="{{ url_for('static', filename=shot.image_path.split('static/')[1]) }}"
              class="w-full h-48 object-cover rounded mb-2">
@@ -11,5 +12,6 @@
         <p><strong>Type:</strong> {{ shot.alert_type }}</p>
         <p><strong>Time:</strong> {{ shot.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</p>
     </div>
+    {% endfor %}
 </div>
 {% endblock %}
