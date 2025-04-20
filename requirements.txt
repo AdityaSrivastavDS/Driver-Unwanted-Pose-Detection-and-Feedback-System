@@ -3,5 +3,4 @@ flask_sqlalchemy
 bcrypt
 tensorflow
 opencv-python
-playsound
 numpy
