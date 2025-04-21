@@ -1,15 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-<!-- Floating Animated Background Shapes -->
 <div class="background-wrapper">
-    <div class="floating-shape"></div>
-    <div class="floating-shape"></div>
-    <div class="sticker"></div>
-    <div class="sticker"></div>
+    <div class="floating-shape shape1"></div>
+    <div class="floating-shape shape2"></div>
+    <div class="floating-shape shape3"></div>
+    <div class="sticker sticker1"></div>
+    <div class="sticker sticker2"></div>
 </div>
 
-<div class="container mx-auto px-6 py-10">
+
+<!-- Main Content Container -->
+<div class="container mx-auto px-6 py-10 relative z-10">
     <h2 class="section-title mb-10" id="poseTitle">Unwanted Pose Screenshots</h2>
 
     {% if shots %}
@@ -29,10 +31,7 @@
     {% endif %}
 </div>
 
-<!-- Optional Floating Decorative Stickers -->
-<div class="sticker"></div>
-<div class="sticker"></div>
-
+<!-- Animations -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         gsap.from("#poseTitle", { duration: 1, opacity: 0, y: -50, ease: "power3.out" });
