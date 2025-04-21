@@ -1,17 +1,42 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2 class="text-2xl font-bold mb-4">Unwanted Pose Screenshots</h2>
-
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-    {% for shot in shots %}
-    <div class="bg-white rounded shadow p-4">
-        <img src="{{ url_for('static', filename=shot.image_path.split('static/')[1]) }}"
-             class="w-full h-48 object-cover rounded mb-2">
-        <p><strong>Email:</strong> {{ shot.user_email }}</p>
-        <p><strong>Type:</strong> {{ shot.alert_type }}</p>
-        <p><strong>Time:</strong> {{ shot.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</p>
-    </div>
-    {% endfor %}
+<!-- Floating Animated Background Shapes -->
+<div class="background-wrapper">
+    <div class="floating-shape"></div>
+    <div class="floating-shape"></div>
+    <div class="sticker"></div>
+    <div class="sticker"></div>
 </div>
+
+<div class="container mx-auto px-6 py-10">
+    <h2 class="section-title mb-10" id="poseTitle">Unwanted Pose Screenshots</h2>
+
+    {% if shots %}
+    <div class="scrollable-section grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for shot in shots %}
+        <div class="glass-card shadow-lg">
+            <img src="{{ url_for('static', filename=shot.image_path.split('static/')[1]) }}"
+                 class="w-full h-48 object-cover rounded mb-4 shadow-lg border border-blue-500">
+            <p class="neon-paragraph"><strong>Email:</strong> {{ shot.user_email }}</p>
+            <p class="neon-paragraph"><strong>Type:</strong> {{ shot.alert_type }}</p>
+            <p class="text-sm text-gray-400"><strong>Time:</strong> {{ shot.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-center text-lg neon-paragraph mt-6">No screenshots have been recorded yet.</p>
+    {% endif %}
+</div>
+
+<!-- Optional Floating Decorative Stickers -->
+<div class="sticker"></div>
+<div class="sticker"></div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        gsap.from("#poseTitle", { duration: 1, opacity: 0, y: -50, ease: "power3.out" });
+        gsap.from(".glass-card", { duration: 1, opacity: 0, y: 50, stagger: 0.2, ease: "power2.out" });
+    });
+</script>
 {% endblock %}
