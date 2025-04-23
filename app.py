@@ -57,6 +57,9 @@ def gen_frames(user_email):
     if user_email.endswith("@poseguard.com"):
         return
 
+    unwanted_pose_count = 0  # Counter for consecutive unwanted pose detections
+    threshold = 3  # Number of consecutive frames to confirm unwanted pose
+
     while True:
         success, frame = camera.read()
         if not success:
@@ -65,6 +68,11 @@ def gen_frames(user_email):
         is_unwanted, class_name, confidence = detect_pose(frame)
 
         if is_unwanted:
+            unwanted_pose_count += 1
+        else:
+            unwanted_pose_count = 0
+
+        if unwanted_pose_count > threshold:
             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
             filename = f"{user_email}_{timestamp}.jpg"
             image_path = f"static/screenshots/{filename}"
@@ -86,6 +94,8 @@ def gen_frames(user_email):
                 playsound("static/resources/random_alert.mp3")
             except Exception as e:
                 print("Sound alert error:", e)
+
+            unwanted_pose_count = 0  # Reset the counter after triggering the alert
 
         label = f"{class_name}: {confidence * 100:.2f}%"
         cv2.putText(frame, label, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.9,
