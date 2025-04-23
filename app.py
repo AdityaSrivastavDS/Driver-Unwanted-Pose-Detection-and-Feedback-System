@@ -52,13 +52,14 @@ class ScreenshotAlert(db.Model):
 with app.app_context():
     db.create_all()
 
+
 def gen_frames(user_email):
     # Only record for normal users, not admin
     if user_email.endswith("@poseguard.com"):
         return
 
     unwanted_pose_count = 0  # Counter for consecutive unwanted pose detections
-    threshold = 3  # Number of consecutive frames to confirm unwanted pose
+    threshold = 2  # Number of consecutive frames to confirm unwanted pose
 
     while True:
         success, frame = camera.read()
@@ -106,7 +107,6 @@ def gen_frames(user_email):
 
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-
 @app.route('/video_feed')
 def video_feed():
     if 'user' not in session:
