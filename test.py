@@ -6,26 +6,33 @@ from playsound import playsound
 from PIL import Image
 import os
 
-# Load the pre-trained model
-model = load_model('model/poseguard_model.h5')
+# Ensure model path is correct using absolute path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+model_path = os.path.join(current_dir, 'model', 'poseguard_model.h5')
 
-# Class labels (update if needed)
+# Load the pre-trained model
+try:
+    model = load_model(model_path)
+except Exception as e:
+    st.error(f"Error loading model: {e}")
+    raise
+
+# Standardized class labels
 class_labels = [
     "Normal Pose",       # class 0
-    "Drinking",          # class 1
-    "Using Phone",       # class 2
-    "Smoking",           # class 3
-    "Looking Away",      # class 4
-    "No Hands on Wheel", # class 5
-    "Sleeping",          # class 6
-    "Other Distraction"  # class 7
+    "",      # class 1
+    "Using Phone",       # class 2 sahi
+    "",           # class 3
+    "Drinking",      # class 4 sahi
+    "No Hands on Wheel", # class 5 sahi
+    "Makeup",          # class 6 sahi
+    "Looking Away"  # class 7 sahi
 ]
-
 
 # Function to preprocess the input image
 def preprocess_frame(frame):
     frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)  # Convert to BGR for OpenCV
-    resized = cv2.resize(frame, (128, 128))
+    resized = cv2.resize(frame, (224, 224))
     norm = resized.astype('float32') / 255.0
     return np.expand_dims(norm, axis=0)
 

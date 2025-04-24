@@ -5,4 +5,3 @@ tensorflow
 opencv-python
 playsound
 numpy
-gunicorn

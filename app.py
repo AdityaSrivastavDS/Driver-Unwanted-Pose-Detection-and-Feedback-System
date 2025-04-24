@@ -59,54 +59,71 @@ def gen_frames(user_email):
         return
 
     unwanted_pose_count = 0  # Counter for consecutive unwanted pose detections
-    threshold = 2  # Number of consecutive frames to confirm unwanted pose
+    threshold = 10  # Increased threshold for unwanted pose detection
+    last_alert_time = datetime.now()  # Track last alert time
+    cooldown_seconds = 10  # Cooldown period between alerts
+
+    def play_alert_sound():
+        try:
+            playsound("static/resources/random_alert.mp3")
+        except Exception as e:
+            print("Sound alert error:", e)
 
     while True:
-        success, frame = camera.read()
-        if not success:
-            break
+        try:
+            success, frame = camera.read()
+            if not success:
+                print("Failed to grab frame")
+                continue
 
-        is_unwanted, class_name, confidence = detect_pose(frame)
+            is_unwanted, class_name, confidence = detect_pose(frame)
 
-        if is_unwanted:
-            unwanted_pose_count += 1
-        else:
-            unwanted_pose_count = 0
+            if is_unwanted:
+                unwanted_pose_count += 1
+            else:
+                unwanted_pose_count = 0
 
-        if unwanted_pose_count > threshold:
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            filename = f"{user_email}_{timestamp}.jpg"
-            image_path = f"static/screenshots/{filename}"
-            cv2.imwrite(image_path, frame)
+            current_time = datetime.now()
+            time_since_last_alert = (current_time - last_alert_time).total_seconds()
 
-            with app.app_context():
-                new_alert = Alert(alert_type=f"Unwanted Pose Detected ({class_name})", user_email=user_email)
-                db.session.add(new_alert)
+            if unwanted_pose_count > threshold and time_since_last_alert >= cooldown_seconds:
+                timestamp = current_time.strftime("%Y%m%d_%H%M%S")
+                filename = f"{user_email}_{timestamp}.jpg"
+                image_path = f"static/screenshots/{filename}"
+                cv2.imwrite(image_path, frame)
 
-                screenshot_alert = ScreenshotAlert(
-                    image_path=image_path,
-                    user_email=user_email,
-                    alert_type=f"Unwanted Pose Detected ({class_name})"
-                )
-                db.session.add(screenshot_alert)
-                db.session.commit()
+                with app.app_context():
+                    new_alert = Alert(alert_type=f"Unwanted Pose Detected ({class_name})", user_email=user_email)
+                    db.session.add(new_alert)
 
-            try:
-                playsound("static/resources/random_alert.mp3")
-            except Exception as e:
-                print("Sound alert error:", e)
+                    screenshot_alert = ScreenshotAlert(
+                        image_path=image_path,
+                        user_email=user_email,
+                        alert_type=f"Unwanted Pose Detected ({class_name})"
+                    )
+                    db.session.add(screenshot_alert)
+                    db.session.commit()
 
-            unwanted_pose_count = 0  # Reset the counter after triggering the alert
+                # Start sound alert in a separate thread
+                Thread(target=play_alert_sound).start()
+                
+                last_alert_time = current_time  # Update last alert time
+                unwanted_pose_count = 0  # Reset the counter after triggering the alert
 
-        label = f"{class_name}: {confidence * 100:.2f}%"
-        cv2.putText(frame, label, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.9,
-                    (0, 0, 255) if is_unwanted else (0, 255, 0), 2)
+            label = f"{class_name}: {confidence * 100:.2f}%"
+            cv2.putText(frame, label, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.9,
+                        (0, 0, 255) if is_unwanted else (0, 255, 0), 2)
 
-        ret, buffer = cv2.imencode('.jpg', frame)
-        frame = buffer.tobytes()
+            ret, buffer = cv2.imencode('.jpg', frame)
+            frame = buffer.tobytes()
 
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        except Exception as e:
+            print(f"Error in frame processing: {e}")
+            continue
+
+
 @app.route('/video_feed')
 def video_feed():
     if 'user' not in session:
