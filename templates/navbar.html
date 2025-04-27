@@ -1,93 +1,93 @@
 <nav class="navbar-custom">
-    <div class="container-fluid navbar-inner">
-      <a href="{{ url_for('index') }}" class="navbar-brand-custom">
-        🚀 PoseGuard
-      </a>
-      <ul class="navbar-links-custom">
-        <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
-        <li><a href="{{ url_for('reports') }}">Reports</a></li>
-        <li><a href="{{ url_for('about') }}">About</a></li>
-        <li><a href="{{ url_for('information') }}">Information</a></li>
-  
-        {% if session.get('user') %}
-          <li><a href="{{ url_for('logout') }}" class="logout-link-custom">Logout</a></li>
-        {% else %}
-          <li><a href="{{ url_for('login') }}">Login</a></li>
-        {% endif %}
-  
-        {% if session.get('admin') %}
-          <li><a href="{{ url_for('admin_portal') }}">Admin Portal</a></li>
-        {% endif %}
-      </ul>
-    </div>
-  </nav>
-  
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
-  
-    .navbar-custom {
-      width: 100%;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-      box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
-      padding: 10px 30px;
-      font-family: 'Orbitron', sans-serif;
-    }
-  
-    .navbar-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-  
-    .navbar-brand-custom {
-      font-size: 1.8rem;
-      color: #00ffee;
-      text-shadow: 0 0 10px #00ffee, 0 0 30px #00ffee;
-      font-weight: 700;
-      text-decoration: none;
-      transition: all 0.3s ease;
-    }
-  
-    .navbar-brand-custom:hover {
-      transform: scale(1.1);
-      text-shadow: 0 0 20px #00ffee, 0 0 40px #00ffee;
-    }
-  
-    .navbar-links-custom {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 25px;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-    }
-  
-    .navbar-links-custom li a {
-      color: #0ff;
-      text-decoration: none;
-      font-weight: 600;
-      text-shadow: 0 0 10px #0ff, 0 0 25px #0ff;
-      transition: all 0.3s ease;
-    }
-  
-    .navbar-links-custom li a:hover {
-      color: #00e1d6;
-      text-shadow: 0 0 15px #00ffee, 0 0 35px #00ffee;
-      transform: scale(1.05);
-    }
-  
-    .logout-link-custom {
-      color: #ff4d4d;
-      text-shadow: 0 0 10px #ff4d4d, 0 0 25px #ff4d4d;
-    }
-  
-    .logout-link-custom:hover {
-      color: #ff0000;
-      text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000;
-    }
-  </style>
-  
+  <div class="container-fluid navbar-inner">
+    <a href="{{ url_for('index') }}" class="navbar-brand-custom">
+      🚀 PoseGuard
+    </a>
+    <ul class="navbar-links-custom">
+      <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+      <li><a href="{{ url_for('reports') }}">Reports</a></li>
+      <li><a href="{{ url_for('about') }}">About</a></li>
+      <li><a href="{{ url_for('information') }}">Information</a></li>
+
+
+      {% if session.get('user') %}
+      <li><a href="{{ url_for('logout') }}" class="logout-link-custom">Logout</a></li>
+      {% else %}
+      <li><a href="{{ url_for('login') }}">Login</a></li>
+      {% endif %}
+
+      {% if session.get('admin') %}
+      <li><a href="{{ url_for('admin_portal') }}">Admin Portal</a></li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
+
+  .navbar-custom {
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    padding: 10px 30px;
+    font-family: 'Orbitron', sans-serif;
+  }
+
+  .navbar-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .navbar-brand-custom {
+    font-size: 1.8rem;
+    color: #00ffee;
+    text-shadow: 0 0 10px #00ffee, 0 0 30px #00ffee;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .navbar-brand-custom:hover {
+    transform: scale(1.1);
+    text-shadow: 0 0 20px #00ffee, 0 0 40px #00ffee;
+  }
+
+  .navbar-links-custom {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .navbar-links-custom li a {
+    color: #0ff;
+    text-decoration: none;
+    font-weight: 600;
+    text-shadow: 0 0 10px #0ff, 0 0 25px #0ff;
+    transition: all 0.3s ease;
+  }
+
+  .navbar-links-custom li a:hover {
+    color: #00e1d6;
+    text-shadow: 0 0 15px #00ffee, 0 0 35px #00ffee;
+    transform: scale(1.05);
+  }
+
+  .logout-link-custom {
+    color: #ff4d4d;
+    text-shadow: 0 0 10px #ff4d4d, 0 0 25px #ff4d4d;
+  }
+
+  .logout-link-custom:hover {
+    color: #ff0000;
+    text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000;
+  }
+</style>

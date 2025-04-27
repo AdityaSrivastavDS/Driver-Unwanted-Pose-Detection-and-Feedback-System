@@ -137,7 +137,6 @@ def video_feed():
 
     return Response(gen_frames(user_email), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-
 @app.route('/')
 def index():
     return render_template('index.html')
