@@ -11,12 +11,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #4a90e2;
-      --secondary: #50c9c3;
-      --dark: #0a0a15;
-      --darker: #050508;
-      --accent: #6c63ff;
-      --text-glow: 0 0 8px rgba(74, 144, 226, 0.4);
+      --neon-blue: #00f3ff;
+      --neon-pink: #ff00ff;
+      --neon-purple: #9d00ff;
+      --neon-green: #00ff9d;
+      --dark-bg: #0a0a15;
+      --darker-bg: #050508;
+      --card-bg: rgba(10, 10, 21, 0.8);
+      --text-glow: 0 0 10px rgba(0, 243, 255, 0.5);
     }
 
 
@@ -29,7 +31,7 @@
 
     body {
       font-family: 'Rajdhani', sans-serif;
-      background: var(--dark);
+      background: var(--dark-bg);
       color: #ffffff;
       overflow-x: hidden;
       line-height: 1.6;
@@ -39,7 +41,7 @@
     .navbar {
       background: rgba(10, 10, 21, 0.95);
       backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(0, 242, 255, 0.1);
+      border-bottom: 1px solid rgba(0, 243, 255, 0.1);
     }
 
 
@@ -47,7 +49,7 @@
       font-family: 'Orbitron', sans-serif;
       font-weight: 700;
       font-size: 2rem;
-      color: var(--primary);
+      color: var(--neon-blue);
       text-shadow: var(--text-glow);
     }
 
@@ -63,7 +65,7 @@
 
 
     .nav-link:hover {
-      color: var(--primary);
+      color: var(--neon-blue);
       text-shadow: var(--text-glow);
     }
 
@@ -72,229 +74,54 @@
       position: relative;
       min-height: 100vh;
       width: 100%;
-      background: linear-gradient(rgba(5,5,8,0.98), rgba(10,10,21,0.99));
+      background: linear-gradient(145deg, var(--darker-bg), var(--dark-bg));
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      perspective: 2000px;
-      padding: 2rem;
     }
 
 
-    .hero-background {
+    .quantum-field {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: 1;
-      transform-style: preserve-3d;
+      background: 
+        radial-gradient(circle at 20% 20%, rgba(0, 243, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 0, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(157, 0, 255, 0.1) 0%, transparent 50%);
+      animation: quantumPulse 8s ease-in-out infinite;
     }
 
 
-    .cyber-tunnel {
+    .quantum-particle {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform-style: preserve-3d;
-      transform: translate(-50%, -50%) rotateX(60deg);
-      animation: tunnelRotate 20s linear infinite;
-    }
-
-
-    .tunnel-layer {
-      position: absolute;
-      width: 100vw;
-      height: 100vw;
-      border: 2px solid rgba(74, 144, 226, 0.1);
-      border-radius: 50%;
-      transform-style: preserve-3d;
-    }
-
-
-    @keyframes tunnelRotate {
-      0% {
-        transform: translate(-50%, -50%) rotateX(60deg) rotateZ(0deg);
-      }
-      100% {
-        transform: translate(-50%, -50%) rotateX(60deg) rotateZ(360deg);
-      }
-    }
-
-
-    .geometric-shapes {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      transform-style: preserve-3d;
-    }
-
-
-    .shape {
-      position: absolute;
-      transform-style: preserve-3d;
-      animation: shapeFloat 10s ease-in-out infinite;
-    }
-
-
-    .shape::before {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(45deg, var(--primary), var(--secondary));
-      opacity: 0.1;
-      filter: blur(5px);
-    }
-
-
-    .hexagon {
-      width: 100px;
-      height: 115px;
-      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-      background: rgba(74, 144, 226, 0.1);
-      border: 1px solid rgba(74, 144, 226, 0.3);
-    }
-
-
-    .pyramid {
-      width: 0;
-      height: 0;
-      border-left: 50px solid transparent;
-      border-right: 50px solid transparent;
-      border-bottom: 86.6px solid rgba(74, 144, 226, 0.1);
-      transform-style: preserve-3d;
-    }
-
-
-    .cube {
-      width: 80px;
-      height: 80px;
-      transform-style: preserve-3d;
-      animation: cubeRotate 15s linear infinite;
-    }
-
-
-    .cube-face {
-      position: absolute;
-      width: 80px;
-      height: 80px;
-      background: rgba(74, 144, 226, 0.1);
-      border: 1px solid rgba(74, 144, 226, 0.3);
-    }
-
-
-    .energy-field {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at center, transparent 0%, rgba(74, 144, 226, 0.1) 50%, transparent 100%);
-      animation: energyPulse 8s ease-in-out infinite;
-      mix-blend-mode: screen;
-    }
-
-
-    .digital-rain {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(180deg,
-        transparent 0%,
-        rgba(74, 144, 226, 0.05) 45%,
-        rgba(74, 144, 226, 0.1) 55%,
-        transparent 100%
-      );
-      background-size: 100% 300%;
-      animation: digitalRain 10s linear infinite;
-    }
-
-
-    .glow-lines {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
-
-
-    .glow-line {
-      position: absolute;
-      width: 100%;
-      height: 1px;
-      background: linear-gradient(90deg,
-        transparent,
-        rgba(74, 144, 226, 0.5),
-        rgba(80, 201, 195, 0.5),
+      width: 4px;
+      height: 4px;
+      background: radial-gradient(circle, 
+        var(--neon-blue),
+        var(--neon-pink),
         transparent
       );
-      animation: glowLineMove 8s linear infinite;
+      border-radius: 50%;
+      box-shadow: 0 0 15px var(--neon-blue);
+      animation: particleFloat 6s ease-in-out infinite;
     }
 
 
-    @keyframes shapeFloat {
-      0%, 100% {
-        transform: translateZ(0) translateY(0) rotate(0deg);
-      }
-      25% {
-        transform: translateZ(100px) translateY(-30px) rotate(90deg);
-      }
-      50% {
-        transform: translateZ(0) translateY(0) rotate(180deg);
-      }
-      75% {
-        transform: translateZ(-100px) translateY(30px) rotate(270deg);
-      }
-    }
-
-
-    @keyframes cubeRotate {
-      0% {
-        transform: rotateX(0) rotateY(0) rotateZ(0);
-      }
-      100% {
-        transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
-      }
-    }
-
-
-    @keyframes energyPulse {
-      0%, 100% {
-        opacity: 0.3;
-        transform: scale(1);
-      }
-      50% {
-        opacity: 0.6;
-        transform: scale(1.2);
-      }
-    }
-
-
-    @keyframes digitalRain {
-      0% {
-        background-position: 0 0;
-      }
-      100% {
-        background-position: 0 300%;
-      }
-    }
-
-
-    @keyframes glowLineMove {
-      0% {
-        transform: translateX(-100%) translateY(0);
-      }
-      100% {
-        transform: translateX(100%) translateY(100px);
-      }
+    .quantum-connection {
+      position: absolute;
+      height: 1px;
+      background: linear-gradient(90deg, 
+        transparent,
+        var(--neon-blue),
+        var(--neon-pink),
+        transparent
+      );
+      transform-origin: left;
+      animation: connectionFlow 4s linear infinite;
     }
 
 
@@ -310,8 +137,8 @@
       background: rgba(10, 10, 21, 0.2);
       backdrop-filter: blur(20px);
       border-radius: 30px;
-      border: 1px solid rgba(74, 144, 226, 0.2);
-      box-shadow: 0 0 50px rgba(74, 144, 226, 0.1);
+      border: 1px solid rgba(0, 243, 255, 0.2);
+      box-shadow: 0 0 50px rgba(0, 243, 255, 0.1);
     }
 
 
@@ -321,7 +148,7 @@
       font-weight: 900;
       line-height: 1.1;
       margin-bottom: 1.5rem;
-      color: var(--primary);
+      color: var(--neon-blue);
       text-shadow: var(--text-glow);
       transform-style: preserve-3d;
     }
@@ -331,10 +158,10 @@
       display: block;
       font-size: clamp(2rem, 6vw, 4rem);
       animation: titleGlow 4s ease-in-out infinite;
-      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 0 8px rgba(74, 144, 226, 0.3));
+      filter: drop-shadow(0 0 8px rgba(0, 243, 255, 0.3));
     }
 
 
@@ -351,10 +178,10 @@
 
     @keyframes titleGlow {
       0%, 100% {
-        filter: drop-shadow(0 0 8px rgba(74, 144, 226, 0.3));
+        filter: drop-shadow(0 0 8px rgba(0, 243, 255, 0.3));
       }
       50% {
-        filter: drop-shadow(0 0 20px rgba(74, 144, 226, 0.6));
+        filter: drop-shadow(0 0 20px rgba(0, 243, 255, 0.6));
       }
     }
 
@@ -373,10 +200,10 @@
 
     .btn-glow {
       font-family: 'Orbitron', sans-serif;
-      font-size: clamp(0.9rem, 2vw, 1.2rem);
-      padding: clamp(0.8rem, 2vw, 1rem) clamp(1.5rem, 4vw, 2.5rem);
-      background: linear-gradient(45deg, var(--primary), var(--secondary));
-      color: var(--darker);
+      font-size: 1.1rem;
+      padding: 0.8rem 2rem;
+      background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
+      color: var(--darker-bg);
       border: none;
       border-radius: 50px;
       text-transform: uppercase;
@@ -384,9 +211,14 @@
       font-weight: 600;
       position: relative;
       overflow: hidden;
-      transform-style: preserve-3d;
       transition: all 0.3s ease;
-      box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
+      box-shadow: 0 5px 15px rgba(0, 243, 255, 0.3);
+    }
+
+
+    .btn-glow:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(0, 243, 255, 0.5);
     }
 
 
@@ -407,138 +239,8 @@
     }
 
 
-    .btn-glow:hover {
-      transform: translateY(-3px) scale(1.05);
-      box-shadow: 0 8px 25px rgba(74, 144, 226, 0.5);
-    }
-
-
     .btn-glow:hover::before {
       left: 100%;
-    }
-
-
-    .cyber-grid {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image:
-        linear-gradient(to right, rgba(74, 144, 226, 0.1) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(74, 144, 226, 0.1) 1px, transparent 1px);
-      background-size: 50px 50px;
-      transform: perspective(1000px) rotateX(60deg);
-      transform-origin: center center;
-      animation: gridMove 20s linear infinite;
-      z-index: -3;
-    }
-
-
-    @keyframes gridMove {
-      0% {
-        transform: perspective(1000px) rotateX(60deg) translateY(0);
-      }
-      100% {
-        transform: perspective(1000px) rotateX(60deg) translateY(50px);
-      }
-    }
-
-
-    .cyber-circles {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -2;
-      opacity: 0.5;
-    }
-
-
-    .cyber-circle {
-      position: absolute;
-      border: 2px solid rgba(74, 144, 226, 0.2);
-      border-radius: 50%;
-      transform-style: preserve-3d;
-      animation: circleFloat 10s ease-in-out infinite;
-    }
-
-
-    @keyframes circleFloat {
-      0%, 100% {
-        transform: translateZ(0) rotate(0deg);
-      }
-      25% {
-        transform: translateZ(100px) rotate(90deg);
-      }
-      50% {
-        transform: translateZ(0) rotate(180deg);
-      }
-      75% {
-        transform: translateZ(-100px) rotate(270deg);
-      }
-    }
-
-
-    .tech-lines {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-    }
-
-
-    .tech-line {
-      position: absolute;
-      background: linear-gradient(90deg, transparent, rgba(74, 144, 226, 0.2), transparent);
-      height: 1px;
-      width: 100%;
-      transform-style: preserve-3d;
-      animation: lineMove 8s linear infinite;
-    }
-
-
-    @keyframes lineMove {
-      0% {
-        transform: translateX(-100%) translateZ(0);
-      }
-      100% {
-        transform: translateX(100%) translateZ(100px);
-      }
-    }
-
-
-    .data-particles {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -4;
-      perspective: 1000px;
-    }
-
-
-    .data-particle {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: rgba(74, 144, 226, 0.5);
-      transform-style: preserve-3d;
-      animation: particleFloat 6s linear infinite;
-    }
-
-
-    @keyframes particleFloat {
-      0% {
-        transform: translateZ(-1000px) translateX(-100%);
-      }
-      100% {
-        transform: translateZ(500px) translateX(100%);
-      }
     }
 
 
@@ -547,7 +249,7 @@
       font-size: 2.8rem;
       text-align: left;
       margin-bottom: 3rem;
-      color: var(--primary);
+      color: var(--neon-blue);
       text-shadow: var(--text-glow);
       transform-style: preserve-3d;
       transition: transform 0.4s ease;
@@ -568,14 +270,13 @@
 
 
     .card {
-      background: rgba(10, 10, 21, 0.8);
-      border: 1px solid rgba(74, 144, 226, 0.2);
+      background: var(--card-bg);
+      border: 1px solid rgba(0, 243, 255, 0.2);
       backdrop-filter: blur(10px);
       border-radius: 15px;
       padding: 2rem;
       color: #fff;
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      transform-style: preserve-3d;
       position: relative;
       overflow: hidden;
     }
@@ -588,27 +289,31 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(45deg, transparent, rgba(74, 144, 226, 0.1), transparent);
-      transform: translateX(-100%) rotate(45deg);
+      background: linear-gradient(45deg, 
+        transparent,
+        rgba(0, 243, 255, 0.1),
+        rgba(255, 0, 255, 0.1),
+        transparent
+      );
+      transform: translateX(-100%);
       transition: transform 0.6s ease;
     }
 
 
     .card:hover::before {
-      transform: translateX(100%) rotate(45deg);
+      transform: translateX(100%);
     }
 
 
     .card:hover {
-      transform: translateY(-10px) scale(1.02) rotateX(5deg) rotateY(5deg);
-      box-shadow: 0 0 30px rgba(74, 144, 226, 0.2);
-      border-color: var(--primary);
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
+      border-color: var(--neon-blue);
     }
 
 
     .card h3 {
-      transform: translateZ(20px);
-      color: var(--primary);
+      color: var(--neon-blue);
       font-family: 'Orbitron', sans-serif;
       margin-bottom: 1rem;
       text-shadow: var(--text-glow);
@@ -621,102 +326,236 @@
 
 
     .features {
-      background: var(--darker);
-    }
-
-
-    .features::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--primary), transparent);
-    }
-
-
-    .testimonials {
-      background: var(--dark);
-    }
-
-
-    .testimonial {
-      background: linear-gradient(145deg, #1a1a2e, #16213e);
-      padding: 2rem;
-      border-radius: 20px;
-      margin: 1rem;
-      transform-style: preserve-3d;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
+      background: linear-gradient(145deg, var(--darker-bg), var(--dark-bg));
       overflow: hidden;
     }
 
 
-    .testimonial::before {
-      content: '';
+    .neural-hologram {
       position: absolute;
       top: 0;
       left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(45deg, transparent, rgba(74, 144, 226, 0.1), transparent);
-      transform: translateX(-100%) rotate(45deg);
-      transition: transform 0.6s ease;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at center, transparent 0%, rgba(0, 243, 255, 0.1) 50%, transparent 100%),
+        repeating-conic-gradient(
+          from 0deg,
+          transparent 0deg 10deg,
+          rgba(255, 0, 255, 0.1) 10deg 20deg
+        );
+      transform: perspective(1000px) rotateX(60deg);
+      animation: hologramRotate 20s linear infinite;
     }
 
 
-    .testimonial:hover::before {
-      transform: translateX(100%) rotate(45deg);
+    .neural-node {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: radial-gradient(circle, 
+        var(--neon-blue),
+        var(--neon-pink),
+        transparent
+      );
+      border-radius: 50%;
+      box-shadow: 0 0 20px var(--neon-blue);
+      animation: nodePulse 3s ease-in-out infinite;
     }
 
 
-    .testimonial:hover {
-      transform: translateY(-5px) rotateX(5deg) rotateY(5deg);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    .neural-beam {
+      position: absolute;
+      height: 1px;
+      background: linear-gradient(90deg, 
+        transparent,
+        var(--neon-blue),
+        var(--neon-pink),
+        transparent
+      );
+      transform-origin: left;
+      animation: beamFlow 4s linear infinite;
     }
 
 
-    .contact-form {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 2rem;
+    .testimonials {
+      position: relative;
+      background: linear-gradient(145deg, var(--darker-bg), var(--dark-bg));
+      overflow: hidden;
     }
 
 
-    .form-control {
-      background: #1a1a2e;
-      border: 1px solid var(--primary);
-      color: #fff;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border-radius: 10px;
+    .cyber-grid {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(to right, rgba(0, 243, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 243, 255, 0.1) 1px, transparent 1px);
+      background-size: 50px 50px;
+      transform: perspective(1000px) rotateX(60deg);
+      animation: gridMove 15s linear infinite;
     }
 
 
-    .form-control:focus {
-      box-shadow: 0 0 10px rgba(0,255,255,0.2);
-      border-color: var(--secondary);
+    .grid-node {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: var(--neon-blue);
+      border-radius: 50%;
+      box-shadow: 0 0 15px var(--neon-blue);
+      animation: gridPulse 3s ease-in-out infinite;
+    }
+
+
+    .grid-beam {
+      position: absolute;
+      height: 1px;
+      background: linear-gradient(90deg, 
+        transparent,
+        var(--neon-blue),
+        var(--neon-green),
+        transparent
+      );
+      transform-origin: left;
+      animation: beamFlow 4s linear infinite;
+    }
+
+
+    .contact {
+      position: relative;
+      background: linear-gradient(145deg, var(--darker-bg), var(--dark-bg));
+      overflow: hidden;
+    }
+
+
+    .data-stream {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 10px,
+          rgba(0, 243, 255, 0.05) 10px,
+          rgba(0, 243, 255, 0.05) 20px
+        );
+      transform: perspective(1000px) rotateX(60deg);
+      animation: streamRotate 20s linear infinite;
+    }
+
+
+    .data-particle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: radial-gradient(circle, 
+        var(--neon-blue),
+        var(--neon-green),
+        transparent
+      );
+      border-radius: 50%;
+      box-shadow: 0 0 15px var(--neon-blue);
+      animation: particleFloat 4s ease-in-out infinite;
+    }
+
+
+    .data-trail {
+      position: absolute;
+      height: 1px;
+      background: linear-gradient(90deg, 
+        transparent,
+        var(--neon-blue),
+        var(--neon-green),
+        transparent
+      );
+      transform-origin: left;
+      animation: trailFlow 3s linear infinite;
+    }
+
+
+    @keyframes quantumPulse {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.2); opacity: 0.8; }
+    }
+
+
+    @keyframes particleFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
+      50% { transform: translate(30px, -20px) scale(1.2); opacity: 0.8; }
+    }
+
+
+    @keyframes connectionFlow {
+      0% { transform: scaleX(0); opacity: 0; }
+      50% { transform: scaleX(1); opacity: 0.6; }
+      100% { transform: scaleX(0); opacity: 0; }
+    }
+
+
+    @keyframes hologramRotate {
+      0% { transform: perspective(1000px) rotateX(60deg) rotateZ(0deg); }
+      100% { transform: perspective(1000px) rotateX(60deg) rotateZ(360deg); }
+    }
+
+
+    @keyframes nodePulse {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.5); opacity: 1; }
+    }
+
+
+    @keyframes beamFlow {
+      0% { transform: scaleX(0); opacity: 0; }
+      50% { transform: scaleX(1); opacity: 0.6; }
+      100% { transform: scaleX(0); opacity: 0; }
+    }
+
+
+    @keyframes gridMove {
+      0% { transform: perspective(1000px) rotateX(60deg) translateY(0); }
+      100% { transform: perspective(1000px) rotateX(60deg) translateY(50px); }
+    }
+
+
+    @keyframes gridPulse {
+      0%, 100% { transform: scale(1); opacity: 0.6; }
+      50% { transform: scale(1.2); opacity: 0.8; }
+    }
+
+
+    @keyframes streamRotate {
+      0% { transform: perspective(1000px) rotateX(60deg) rotateZ(0deg); }
+      100% { transform: perspective(1000px) rotateX(60deg) rotateZ(360deg); }
+    }
+
+
+    @keyframes trailFlow {
+      0% { transform: scaleX(0); opacity: 0; }
+      50% { transform: scaleX(1); opacity: 0.6; }
+      100% { transform: scaleX(0); opacity: 0; }
+    }
+
+
+    .content-wrapper {
+      position: relative;
+      z-index: 1;
     }
 
 
     footer {
-      background: var(--darker);
-      color: var(--primary);
+      background: var(--darker-bg);
+      color: var(--neon-blue);
       padding: 2rem 0;
       text-align: center;
       position: relative;
-    }
-
-
-    footer::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--primary), transparent);
     }
 
 
@@ -729,7 +568,7 @@
 
 
     .social-icons a {
-      color: var(--primary);
+      color: var(--neon-blue);
       font-size: 1.5rem;
       transition: all 0.3s ease;
       transform-style: preserve-3d;
@@ -737,7 +576,7 @@
 
 
     .social-icons a:hover {
-      color: var(--secondary);
+      color: var(--neon-pink);
       transform: translateY(-5px) rotateX(10deg);
     }
 
@@ -746,12 +585,12 @@
       position: absolute;
       top: 20px;
       right: 20px;
-      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
       padding: 0.5rem 1.5rem;
       border-radius: 50px;
       font-size: 0.9rem;
       font-weight: bold;
-      color: var(--darker);
+      color: var(--darker-bg);
       box-shadow: 0 0 15px rgba(0,255,255,0.3);
       animation: pulse 2s infinite;
     }
@@ -761,30 +600,6 @@
       0% { transform: scale(1); }
       50% { transform: scale(1.05); }
       100% { transform: scale(1); }
-    }
-
-
-    .floating-element {
-      position: absolute;
-      width: 50px;
-      height: 50px;
-      background: rgba(74, 144, 226, 0.1);
-      border-radius: 50%;
-      animation: float 6s ease-in-out infinite;
-      pointer-events: none;
-    }
-
-
-    @keyframes float {
-      0% {
-        transform: translateY(0) rotate(0deg);
-      }
-      50% {
-        transform: translateY(-20px) rotate(180deg);
-      }
-      100% {
-        transform: translateY(0) rotate(360deg);
-      }
     }
 
 
@@ -835,13 +650,13 @@
 
 
     .layer-1 {
-      background: radial-gradient(circle at center, rgba(74, 144, 226, 0.1) 0%, transparent 70%);
+      background: radial-gradient(circle at center, rgba(0, 243, 255, 0.1) 0%, transparent 70%);
       animation: pulse 8s ease-in-out infinite;
     }
 
 
     .layer-2 {
-      background: linear-gradient(45deg, rgba(74, 144, 226, 0.05) 25%, transparent 25%, transparent 75%, rgba(74, 144, 226, 0.05) 75%);
+      background: linear-gradient(45deg, rgba(0, 243, 255, 0.05) 25%, transparent 25%, transparent 75%, rgba(0, 243, 255, 0.05) 75%);
       background-size: 100px 100px;
       animation: moveGrid 20s linear infinite;
     }
@@ -852,8 +667,8 @@
         45deg,
         transparent,
         transparent 10px,
-        rgba(74, 144, 226, 0.05) 10px,
-        rgba(74, 144, 226, 0.05) 20px
+        rgba(0, 243, 255, 0.05) 10px,
+        rgba(0, 243, 255, 0.05) 20px
       );
       animation: moveLines 15s linear infinite;
     }
@@ -872,7 +687,7 @@
 
     .shape {
       position: absolute;
-      background: rgba(74, 144, 226, 0.1);
+      background: rgba(0, 243, 255, 0.1);
       border-radius: 50%;
       filter: blur(20px);
       animation: floatShape 15s ease-in-out infinite;
@@ -926,6 +741,205 @@
       position: relative;
       z-index: 1;
     }
+
+    /* Modern Deep Learning Background Animations */
+    .ai-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      perspective: 2000px;
+      transform-style: preserve-3d;
+    }
+
+    /* Section-specific animations */
+    .section {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(145deg, rgba(10, 10, 21, 0.95), rgba(5, 5, 8, 0.98));
+      backdrop-filter: blur(10px);
+      z-index: 1;
+    }
+
+    /* Features Section - Enhanced Neural Network */
+    #features {
+      background: linear-gradient(145deg, rgba(10, 10, 21, 0.95), rgba(5, 5, 8, 0.98));
+    }
+
+    .features-network {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 20%, rgba(0, 243, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(255, 0, 255, 0.1) 0%, transparent 50%);
+      animation: neuralPulse 8s ease-in-out infinite;
+      z-index: -1;
+    }
+
+    .feature-node {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: radial-gradient(circle, 
+        rgba(0, 243, 255, 0.8),
+        rgba(255, 0, 255, 0.6),
+        rgba(157, 0, 255, 0.4)
+      );
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+      animation: nodeFloat 6s ease-in-out infinite;
+    }
+
+    .feature-connection {
+      position: absolute;
+      height: 1px;
+      background: linear-gradient(90deg, 
+        transparent,
+        rgba(0, 243, 255, 0.4),
+        rgba(255, 0, 255, 0.4),
+        transparent
+      );
+      transform-origin: left;
+      animation: connectionFlow 4s linear infinite;
+    }
+
+    /* Testimonials Section - Enhanced Data Stream */
+    .testimonials {
+      background: linear-gradient(145deg, rgba(10, 10, 21, 0.95), rgba(5, 5, 8, 0.98));
+    }
+
+    .testimonial-stream {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 10px,
+          rgba(0, 243, 255, 0.05) 10px,
+          rgba(0, 243, 255, 0.05) 20px
+        );
+      transform: perspective(1000px) rotateX(60deg);
+      animation: streamRotate 20s linear infinite;
+      z-index: -1;
+    }
+
+    .testimonial-particle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: radial-gradient(circle, 
+        rgba(0, 243, 255, 0.8),
+        rgba(255, 0, 255, 0.6),
+        transparent
+      );
+      border-radius: 50%;
+      box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+      animation: particleFloat 4s ease-in-out infinite;
+    }
+
+    /* Contact Section - Enhanced Holographic Interface */
+    .contact {
+      background: linear-gradient(145deg, rgba(10, 10, 21, 0.95), rgba(5, 5, 8, 0.98));
+    }
+
+    .contact-hologram {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at center, transparent 0%, rgba(0, 243, 255, 0.1) 50%, transparent 100%),
+        repeating-conic-gradient(
+          from 0deg,
+          transparent 0deg 10deg,
+          rgba(255, 0, 255, 0.1) 10deg 20deg
+        );
+      transform: perspective(1000px) rotateX(60deg);
+      animation: hologramRotate 20s linear infinite;
+      z-index: -1;
+    }
+
+    .holographic-node {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: radial-gradient(circle, 
+        rgba(0, 243, 255, 0.8),
+        rgba(255, 0, 255, 0.6),
+        rgba(157, 0, 255, 0.4)
+      );
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(0, 243, 255, 0.5);
+      animation: nodePulse 3s ease-in-out infinite;
+    }
+
+    .holographic-beam {
+      position: absolute;
+      height: 1px;
+      background: linear-gradient(90deg, 
+        transparent,
+        rgba(0, 243, 255, 0.6),
+        rgba(255, 0, 255, 0.6),
+        rgba(157, 0, 255, 0.6),
+        transparent
+      );
+      transform-origin: left;
+      animation: beamFlow 4s linear infinite;
+    }
+
+    @keyframes neuralPulse {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.1); opacity: 0.7; }
+    }
+
+    @keyframes nodeFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(30px, -20px) scale(1.2); }
+      50% { transform: translate(60px, 0) scale(1); }
+      75% { transform: translate(30px, 20px) scale(1.2); }
+    }
+
+    @keyframes connectionFlow {
+      0% { transform: scaleX(0); opacity: 0; }
+      50% { transform: scaleX(1); opacity: 0.4; }
+      100% { transform: scaleX(0); opacity: 0; }
+    }
+
+    @keyframes streamRotate {
+      0% { transform: perspective(1000px) rotateX(60deg) rotateZ(0deg); }
+      100% { transform: perspective(1000px) rotateX(60deg) rotateZ(360deg); }
+    }
+
+    @keyframes particleFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
+      50% { transform: translate(20px, -10px) scale(1.1); opacity: 0.8; }
+    }
+
+    @keyframes hologramRotate {
+      0% { transform: perspective(1000px) rotateX(60deg) rotateZ(0deg); }
+      100% { transform: perspective(1000px) rotateX(60deg) rotateZ(360deg); }
+    }
+
+    @keyframes nodePulse {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.5); opacity: 1; }
+    }
+
+    @keyframes beamFlow {
+      0% { transform: scaleX(0); opacity: 0; }
+      50% { transform: scaleX(1); opacity: 0.6; }
+      100% { transform: scaleX(0); opacity: 0; }
+    }
   </style>
 </head>
 
@@ -949,28 +963,7 @@
     <div class="ai-badge">AI-Powered System</div>
    
     <section class="hero">
-      <div class="hero-background">
-        <div class="cyber-tunnel">
-          <div class="tunnel-layer"></div>
-        </div>
-        <div class="geometric-shapes">
-          <div class="shape"></div>
-          <div class="shape"></div>
-          <div class="shape"></div>
-          <div class="shape"></div>
-          <div class="shape"></div>
-          <div class="shape"></div>
-          <div class="shape"></div>
-          <div class="shape"></div>
-          <div class="shape"></div>
-          <div class="shape"></div>
-        </div>
-        <div class="energy-field"></div>
-        <div class="digital-rain"></div>
-        <div class="glow-lines">
-          <div class="glow-line"></div>
-        </div>
-      </div>
+      <div class="quantum-field" id="quantumField"></div>
       <div class="hero-content">
         <h1>PoseGuard<span>Driver Safety</span></h1>
         <p>Advanced AI-powered system for real-time driver monitoring, pose detection, and safety enhancement</p>
@@ -979,7 +972,8 @@
     </section>
 
 
-    <section class="section features" id="features">
+    <section class="features" id="features">
+      <div class="neural-hologram" id="neuralHologram"></div>
       <h2 class="section-title">Key Features</h2>
       <div class="card-container">
         <div class="card">
@@ -1010,7 +1004,8 @@
     </section>
 
 
-    <section class="section testimonials">
+    <section class="testimonials">
+      <div class="cyber-grid" id="cyberGrid"></div>
       <h2 class="section-title">What Users Say</h2>
       <div class="card-container">
         <div class="testimonial">
@@ -1029,7 +1024,8 @@
     </section>
 
 
-    <section class="section contact">
+    <section class="contact">
+      <div class="data-stream" id="dataStream"></div>
       <h2 class="section-title">Get In Touch</h2>
       <div class="contact-form">
         <form>
@@ -1068,306 +1064,151 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <script>
-    // Initialize cyber circles
-    function createCyberCircles() {
-      const container = document.querySelector('.cyber-circles');
-      for (let i = 0; i < 5; i++) {
-        const circle = document.createElement('div');
-        circle.className = 'cyber-circle';
-        const size = Math.random() * 300 + 100;
-        circle.style.width = size + 'px';
-        circle.style.height = size + 'px';
-        circle.style.left = Math.random() * 100 + '%';
-        circle.style.top = Math.random() * 100 + '%';
-        circle.style.animationDelay = (Math.random() * 2) + 's';
-        container.appendChild(circle);
-      }
-    }
-
-
-    // Initialize tech lines
-    function createTechLines() {
-      const container = document.querySelector('.tech-lines');
-      for (let i = 0; i < 10; i++) {
-        const line = document.createElement('div');
-        line.className = 'tech-line';
-        line.style.top = (i * 10) + '%';
-        line.style.animationDelay = (Math.random() * 4) + 's';
-        container.appendChild(line);
-      }
-    }
-
-
-    // Initialize data particles
-    function createDataParticles() {
-      const container = document.querySelector('.data-particles');
-      for (let i = 0; i < 50; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'data-particle';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.top = Math.random() * 100 + '%';
-        particle.style.animationDelay = (Math.random() * 6) + 's';
-        container.appendChild(particle);
-      }
-    }
-
-
-    // Initialize constellation background
-    function initConstellation() {
-      const particlesContainer = document.querySelector('.floating-particles');
-      const numParticles = 30;
-      const numLines = 15;
-
-
+    // Initialize Quantum Field
+    function initQuantumField() {
+      const quantumField = document.getElementById('quantumField');
+      
       // Create particles
-      for (let i = 0; i < numParticles; i++) {
+      for (let i = 0; i < 30; i++) {
         const particle = document.createElement('div');
-        particle.className = 'particle';
+        particle.className = 'quantum-particle';
         particle.style.left = `${Math.random() * 100}%`;
         particle.style.top = `${Math.random() * 100}%`;
-        particle.style.animationDelay = `${Math.random() * 8}s`;
-        particlesContainer.appendChild(particle);
+        particle.style.animationDelay = `${Math.random() * 6}s`;
+        quantumField.appendChild(particle);
       }
 
-
-      // Create connecting lines
-      for (let i = 0; i < numLines; i++) {
-        const line = document.createElement('div');
-        line.className = 'connecting-line';
-        line.style.top = `${Math.random() * 100}%`;
-        line.style.animationDelay = `${Math.random() * 10}s`;
-        particlesContainer.appendChild(line);
+      // Create connections
+      for (let i = 0; i < 20; i++) {
+        const connection = document.createElement('div');
+        connection.className = 'quantum-connection';
+        connection.style.left = `${Math.random() * 100}%`;
+        connection.style.top = `${Math.random() * 100}%`;
+        connection.style.width = `${Math.random() * 200 + 100}px`;
+        connection.style.animationDelay = `${Math.random() * 4}s`;
+        quantumField.appendChild(connection);
       }
     }
 
+    // Initialize Neural Hologram
+    function initNeuralHologram() {
+      const neuralHologram = document.getElementById('neuralHologram');
+      
+      // Create nodes
+      for (let i = 0; i < 15; i++) {
+        const node = document.createElement('div');
+        node.className = 'neural-node';
+        node.style.left = `${Math.random() * 100}%`;
+        node.style.top = `${Math.random() * 100}%`;
+        node.style.animationDelay = `${Math.random() * 3}s`;
+        neuralHologram.appendChild(node);
+      }
 
-    // Enhanced particles configuration
-    particlesJS('particles-js', {
-      particles: {
-        number: {
-          value: 80,
-          density: {
-            enable: true,
-            value_area: 800
-          }
-        },
-        color: {
-          value: ['#4a90e2', '#50c9c3']
-        },
-        shape: {
-          type: ['circle', 'triangle', 'polygon'],
-          stroke: {
-            width: 1,
-            color: '#4a90e2'
-          },
-          polygon: {
-            nb_sides: 6
-          }
-        },
-        opacity: {
-          value: 0.6,
-          random: true,
-          anim: {
-            enable: true,
-            speed: 1,
-            opacity_min: 0.1,
-            sync: false
-          }
-        },
-        size: {
-          value: 3,
-          random: true,
-          anim: {
-            enable: true,
-            speed: 2,
-            size_min: 0.1,
-            sync: false
-          }
-        },
-        line_linked: {
-          enable: true,
-          distance: 150,
-          color: '#4a90e2',
-          opacity: 0.3,
-          width: 1,
-          triangles: {
-            enable: true,
-            opacity: 0.1
-          }
-        },
-        move: {
-          enable: true,
-          speed: 2,
-          direction: 'none',
-          random: true,
-          straight: false,
-          out_mode: 'out',
-          bounce: false,
-          attract: {
-            enable: true,
-            rotateX: 600,
-            rotateY: 1200
-          }
-        }
-      },
-      interactivity: {
-        detect_on: 'canvas',
-        events: {
-          onhover: {
-            enable: true,
-            mode: ['grab', 'bubble', 'repulse']
-          },
-          onclick: {
-            enable: true,
-            mode: 'push'
-          },
-          resize: true
-        },
-        modes: {
-          grab: {
-            distance: 140,
-            line_linked: {
-              opacity: 0.8
-            }
-          },
-          bubble: {
-            distance: 200,
-            size: 6,
-            duration: 2,
-            opacity: 0.8,
-            speed: 3
-          },
-          repulse: {
-            distance: 100,
-            duration: 0.4
-          },
-          push: {
-            particles_nb: 4
-          }
-        }
-      },
-      retina_detect: true
-    });
-
-
-    // Initialize all animations
-    window.addEventListener('load', () => {
-      initConstellation();
-      createCyberCircles();
-      createTechLines();
-      createDataParticles();
-    });
-
-
-    // Add parallax effect to constellation
-    document.addEventListener('mousemove', (e) => {
-      const mouseX = e.clientX / window.innerWidth;
-      const mouseY = e.clientY / window.innerHeight;
-     
-      const constellation = document.querySelector('.constellation');
-      const networkLines = document.querySelector('.network-lines');
-      const particles = document.querySelector('.floating-particles');
-     
-      constellation.style.transform = `translate(${mouseX * 20}px, ${mouseY * 20}px)`;
-      networkLines.style.transform = `translate(${mouseX * -15}px, ${mouseY * -15}px)`;
-      particles.style.transform = `translate(${mouseX * 25}px, ${mouseY * 25}px)`;
-    });
-
-
-    // Initialize 3D background elements
-    function init3DBackground() {
-      // Create tunnel layers
-      const cyberTunnel = document.querySelector('.cyber-tunnel');
+      // Create beams
       for (let i = 0; i < 10; i++) {
-        const layer = document.createElement('div');
-        layer.className = 'tunnel-layer';
-        layer.style.transform = `translateZ(${i * -100}px)`;
-        layer.style.opacity = 1 - (i * 0.1);
-        cyberTunnel.appendChild(layer);
-      }
-
-
-      // Create geometric shapes
-      const shapes = document.querySelector('.geometric-shapes');
-      const shapeTypes = ['hexagon', 'pyramid', 'cube'];
-      const shapeElements = shapes.querySelectorAll('.shape');
-     
-      shapeElements.forEach((shape, index) => {
-        const type = shapeTypes[index % 3];
-        shape.classList.add(type);
-       
-        // Random position and animation delay
-        shape.style.left = `${Math.random() * 100}%`;
-        shape.style.top = `${Math.random() * 100}%`;
-        shape.style.animationDelay = `${Math.random() * 10}s`;
-       
-        // If it's a cube, create faces
-        if (type === 'cube') {
-          const faces = ['front', 'back', 'right', 'left', 'top', 'bottom'];
-          faces.forEach((face, i) => {
-            const cubeFace = document.createElement('div');
-            cubeFace.className = 'cube-face';
-            cubeFace.style.transform = getCubeFaceTransform(face);
-            shape.appendChild(cubeFace);
-          });
-        }
-      });
-
-
-      // Create glow lines
-      const glowLines = document.querySelector('.glow-lines');
-      for (let i = 0; i < 5; i++) {
-        const line = document.createElement('div');
-        line.className = 'glow-line';
-        line.style.top = `${Math.random() * 100}%`;
-        line.style.animationDelay = `${Math.random() * 8}s`;
-        glowLines.appendChild(line);
+        const beam = document.createElement('div');
+        beam.className = 'neural-beam';
+        beam.style.left = `${Math.random() * 100}%`;
+        beam.style.top = `${Math.random() * 100}%`;
+        beam.style.width = `${Math.random() * 200 + 100}px`;
+        beam.style.animationDelay = `${Math.random() * 4}s`;
+        neuralHologram.appendChild(beam);
       }
     }
 
+    // Initialize Cyber Grid
+    function initCyberGrid() {
+      const cyberGrid = document.getElementById('cyberGrid');
+      
+      // Create grid nodes
+      for (let i = 0; i < 20; i++) {
+        const node = document.createElement('div');
+        node.className = 'grid-node';
+        node.style.left = `${Math.random() * 100}%`;
+        node.style.top = `${Math.random() * 100}%`;
+        node.style.animationDelay = `${Math.random() * 3}s`;
+        cyberGrid.appendChild(node);
+      }
 
-    // Helper function to get cube face transforms
-    function getCubeFaceTransform(face) {
-      switch(face) {
-        case 'front': return 'translateZ(40px)';
-        case 'back': return 'translateZ(-40px) rotateY(180deg)';
-        case 'right': return 'translateX(40px) rotateY(90deg)';
-        case 'left': return 'translateX(-40px) rotateY(-90deg)';
-        case 'top': return 'translateY(-40px) rotateX(90deg)';
-        case 'bottom': return 'translateY(40px) rotateX(-90deg)';
+      // Create grid beams
+      for (let i = 0; i < 15; i++) {
+        const beam = document.createElement('div');
+        beam.className = 'grid-beam';
+        beam.style.left = `${Math.random() * 100}%`;
+        beam.style.top = `${Math.random() * 100}%`;
+        beam.style.width = `${Math.random() * 200 + 100}px`;
+        beam.style.animationDelay = `${Math.random() * 4}s`;
+        cyberGrid.appendChild(beam);
       }
     }
 
+    // Initialize Data Stream
+    function initDataStream() {
+      const dataStream = document.getElementById('dataStream');
+      
+      // Create particles
+      for (let i = 0; i < 25; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'data-particle';
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+        particle.style.animationDelay = `${Math.random() * 4}s`;
+        dataStream.appendChild(particle);
+      }
 
-    // Add mouse movement effect
-    function addMouseEffect() {
+      // Create trails
+      for (let i = 0; i < 15; i++) {
+        const trail = document.createElement('div');
+        trail.className = 'data-trail';
+        trail.style.left = `${Math.random() * 100}%`;
+        trail.style.top = `${Math.random() * 100}%`;
+        trail.style.width = `${Math.random() * 200 + 100}px`;
+        trail.style.animationDelay = `${Math.random() * 3}s`;
+        dataStream.appendChild(trail);
+      }
+    }
+
+    // Add mouse parallax effect
+    function addParallaxEffect() {
       document.addEventListener('mousemove', (e) => {
         const mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
         const mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-       
-        const cyberTunnel = document.querySelector('.cyber-tunnel');
-        const shapes = document.querySelector('.geometric-shapes');
-        const energyField = document.querySelector('.energy-field');
-        const digitalRain = document.querySelector('.digital-rain');
-       
-        cyberTunnel.style.transform = `translate(-50%, -50%) rotateX(${60 + mouseY * 10}deg) rotateY(${mouseX * 10}deg)`;
-        shapes.style.transform = `translate(${mouseX * 20}px, ${mouseY * 20}px) rotateX(${mouseY * 5}deg) rotateY(${mouseX * 5}deg)`;
-        energyField.style.transform = `translate(${mouseX * -30}px, ${mouseY * -30}px)`;
-        digitalRain.style.transform = `translate(${mouseX * 10}px, ${mouseY * 10}px)`;
+
+        const quantumField = document.getElementById('quantumField');
+        const neuralHologram = document.getElementById('neuralHologram');
+        const cyberGrid = document.getElementById('cyberGrid');
+        const dataStream = document.getElementById('dataStream');
+
+        if (quantumField) {
+          quantumField.style.transform = `translate(${mouseX * 20}px, ${mouseY * 20}px)`;
+        }
+
+        if (neuralHologram) {
+          neuralHologram.style.transform = `perspective(1000px) rotateX(60deg) rotateZ(${mouseX * 5}deg) translateZ(${mouseY * 30}px)`;
+        }
+
+        if (cyberGrid) {
+          cyberGrid.style.transform = `perspective(1000px) rotateX(60deg) translateY(${mouseY * 20}px)`;
+        }
+
+        if (dataStream) {
+          dataStream.style.transform = `perspective(1000px) rotateX(60deg) rotateZ(${mouseX * 5}deg) translateZ(${mouseY * 50}px)`;
+        }
       });
     }
 
-
     // Initialize all animations
     window.addEventListener('load', () => {
-      init3DBackground();
-      addMouseEffect();
+      initQuantumField();
+      initNeuralHologram();
+      initCyberGrid();
+      initDataStream();
+      addParallaxEffect();
     });
   </script>
 </body>
 
 
 </html>
-
 
 
