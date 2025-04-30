@@ -1,301 +1,1373 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Driver Unwanted Pose Detection</title>
+  <title>PoseGuard - Driver Safety AI</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
-  <link href="https://unpkg.com/animate.css@4.1.1/animate.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --primary: #4a90e2;
+      --secondary: #50c9c3;
+      --dark: #0a0a15;
+      --darker: #050508;
+      --accent: #6c63ff;
+      --text-glow: 0 0 8px rgba(74, 144, 226, 0.4);
+    }
+
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+
     body {
-      font-family: 'Orbitron', sans-serif;
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      font-family: 'Rajdhani', sans-serif;
+      background: var(--dark);
       color: #ffffff;
       overflow-x: hidden;
+      line-height: 1.6;
     }
+
+
+    .navbar {
+      background: rgba(10, 10, 21, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0, 242, 255, 0.1);
+    }
+
+
+    .navbar-brand {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 2rem;
+      color: var(--primary);
+      text-shadow: var(--text-glow);
+    }
+
+
+    .nav-link {
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin: 0 1rem;
+      transition: all 0.3s ease;
+    }
+
+
+    .nav-link:hover {
+      color: var(--primary);
+      text-shadow: var(--text-glow);
+    }
+
 
     .hero {
       position: relative;
-      height: 100vh;
+      min-height: 100vh;
+      width: 100%;
+      background: linear-gradient(rgba(5,5,8,0.98), rgba(10,10,21,0.99));
       display: flex;
-      justify-content: center;
       align-items: center;
-      text-align: center;
+      justify-content: center;
+      overflow: hidden;
+      perspective: 2000px;
       padding: 2rem;
-      background: url('https://www.optalert.com/wp-content/uploads/2024/12/optalert_eyelid_movement_on_an_intoxication_scale_while_driving_a3ecd44f-9b39-43bf-8fd0-79181a6071ef-1024x585.png') center/cover no-repeat;
-      background-blend-mode: overlay;
-      background-color: rgba(0,0,0,0.2);
     }
+
+
+    .hero-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      transform-style: preserve-3d;
+    }
+
+
+    .cyber-tunnel {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform-style: preserve-3d;
+      transform: translate(-50%, -50%) rotateX(60deg);
+      animation: tunnelRotate 20s linear infinite;
+    }
+
+
+    .tunnel-layer {
+      position: absolute;
+      width: 100vw;
+      height: 100vw;
+      border: 2px solid rgba(74, 144, 226, 0.1);
+      border-radius: 50%;
+      transform-style: preserve-3d;
+    }
+
+
+    @keyframes tunnelRotate {
+      0% {
+        transform: translate(-50%, -50%) rotateX(60deg) rotateZ(0deg);
+      }
+      100% {
+        transform: translate(-50%, -50%) rotateX(60deg) rotateZ(360deg);
+      }
+    }
+
+
+    .geometric-shapes {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+    }
+
+
+    .shape {
+      position: absolute;
+      transform-style: preserve-3d;
+      animation: shapeFloat 10s ease-in-out infinite;
+    }
+
+
+    .shape::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      opacity: 0.1;
+      filter: blur(5px);
+    }
+
+
+    .hexagon {
+      width: 100px;
+      height: 115px;
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      background: rgba(74, 144, 226, 0.1);
+      border: 1px solid rgba(74, 144, 226, 0.3);
+    }
+
+
+    .pyramid {
+      width: 0;
+      height: 0;
+      border-left: 50px solid transparent;
+      border-right: 50px solid transparent;
+      border-bottom: 86.6px solid rgba(74, 144, 226, 0.1);
+      transform-style: preserve-3d;
+    }
+
+
+    .cube {
+      width: 80px;
+      height: 80px;
+      transform-style: preserve-3d;
+      animation: cubeRotate 15s linear infinite;
+    }
+
+
+    .cube-face {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      background: rgba(74, 144, 226, 0.1);
+      border: 1px solid rgba(74, 144, 226, 0.3);
+    }
+
+
+    .energy-field {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, transparent 0%, rgba(74, 144, 226, 0.1) 50%, transparent 100%);
+      animation: energyPulse 8s ease-in-out infinite;
+      mix-blend-mode: screen;
+    }
+
+
+    .digital-rain {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg,
+        transparent 0%,
+        rgba(74, 144, 226, 0.05) 45%,
+        rgba(74, 144, 226, 0.1) 55%,
+        transparent 100%
+      );
+      background-size: 100% 300%;
+      animation: digitalRain 10s linear infinite;
+    }
+
+
+    .glow-lines {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+
+    .glow-line {
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg,
+        transparent,
+        rgba(74, 144, 226, 0.5),
+        rgba(80, 201, 195, 0.5),
+        transparent
+      );
+      animation: glowLineMove 8s linear infinite;
+    }
+
+
+    @keyframes shapeFloat {
+      0%, 100% {
+        transform: translateZ(0) translateY(0) rotate(0deg);
+      }
+      25% {
+        transform: translateZ(100px) translateY(-30px) rotate(90deg);
+      }
+      50% {
+        transform: translateZ(0) translateY(0) rotate(180deg);
+      }
+      75% {
+        transform: translateZ(-100px) translateY(30px) rotate(270deg);
+      }
+    }
+
+
+    @keyframes cubeRotate {
+      0% {
+        transform: rotateX(0) rotateY(0) rotateZ(0);
+      }
+      100% {
+        transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+      }
+    }
+
+
+    @keyframes energyPulse {
+      0%, 100% {
+        opacity: 0.3;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.6;
+        transform: scale(1.2);
+      }
+    }
+
+
+    @keyframes digitalRain {
+      0% {
+        background-position: 0 0;
+      }
+      100% {
+        background-position: 0 300%;
+      }
+    }
+
+
+    @keyframes glowLineMove {
+      0% {
+        transform: translateX(-100%) translateY(0);
+      }
+      100% {
+        transform: translateX(100%) translateY(100px);
+      }
+    }
+
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      width: 100%;
+      padding: 3rem;
+      text-align: center;
+      transform-style: preserve-3d;
+      animation: contentFloat 8s ease-in-out infinite;
+      background: rgba(10, 10, 21, 0.2);
+      backdrop-filter: blur(20px);
+      border-radius: 30px;
+      border: 1px solid rgba(74, 144, 226, 0.2);
+      box-shadow: 0 0 50px rgba(74, 144, 226, 0.1);
+    }
+
 
     .hero h1 {
-      font-size: 4.5rem;
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2.5rem, 8vw, 5rem);
       font-weight: 900;
-      color: #00ffee;
-      text-shadow: 0 0 20px #00ffee;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      color: var(--primary);
+      text-shadow: var(--text-glow);
+      transform-style: preserve-3d;
     }
+
+
+    .hero h1 span {
+      display: block;
+      font-size: clamp(2rem, 6vw, 4rem);
+      animation: titleGlow 4s ease-in-out infinite;
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 8px rgba(74, 144, 226, 0.3));
+    }
+
 
     .hero p {
-      font-size: 1.5rem;
-      color: #eee;
+      font-size: clamp(1rem, 3vw, 1.5rem);
+      color: #fff;
+      margin: 0 auto 2rem;
+      max-width: 800px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+      transform-style: preserve-3d;
+      animation: textPulse 5s ease-in-out infinite;
     }
+
+
+    @keyframes titleGlow {
+      0%, 100% {
+        filter: drop-shadow(0 0 8px rgba(74, 144, 226, 0.3));
+      }
+      50% {
+        filter: drop-shadow(0 0 20px rgba(74, 144, 226, 0.6));
+      }
+    }
+
+
+    @keyframes textPulse {
+      0%, 100% {
+        opacity: 0.9;
+        transform: translateZ(0);
+      }
+      50% {
+        opacity: 1;
+        transform: translateZ(30px);
+      }
+    }
+
 
     .btn-glow {
-      background-color: #00ffee;
-      color: #000;
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(0.9rem, 2vw, 1.2rem);
+      padding: clamp(0.8rem, 2vw, 1rem) clamp(1.5rem, 4vw, 2.5rem);
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      color: var(--darker);
       border: none;
-      box-shadow: 0 0 20px #00ffee;
-      transition: 0.3s;
+      border-radius: 50px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 600;
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
     }
+
+
+    .btn-glow::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent
+      );
+      transition: 0.5s;
+    }
+
 
     .btn-glow:hover {
-      background-color: #00e1d6;
-      box-shadow: 0 0 30px #00ffee, 0 0 60px #00ffee;
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(74, 144, 226, 0.5);
     }
+
+
+    .btn-glow:hover::before {
+      left: 100%;
+    }
+
+
+    .cyber-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image:
+        linear-gradient(to right, rgba(74, 144, 226, 0.1) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(74, 144, 226, 0.1) 1px, transparent 1px);
+      background-size: 50px 50px;
+      transform: perspective(1000px) rotateX(60deg);
+      transform-origin: center center;
+      animation: gridMove 20s linear infinite;
+      z-index: -3;
+    }
+
+
+    @keyframes gridMove {
+      0% {
+        transform: perspective(1000px) rotateX(60deg) translateY(0);
+      }
+      100% {
+        transform: perspective(1000px) rotateX(60deg) translateY(50px);
+      }
+    }
+
+
+    .cyber-circles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      opacity: 0.5;
+    }
+
+
+    .cyber-circle {
+      position: absolute;
+      border: 2px solid rgba(74, 144, 226, 0.2);
+      border-radius: 50%;
+      transform-style: preserve-3d;
+      animation: circleFloat 10s ease-in-out infinite;
+    }
+
+
+    @keyframes circleFloat {
+      0%, 100% {
+        transform: translateZ(0) rotate(0deg);
+      }
+      25% {
+        transform: translateZ(100px) rotate(90deg);
+      }
+      50% {
+        transform: translateZ(0) rotate(180deg);
+      }
+      75% {
+        transform: translateZ(-100px) rotate(270deg);
+      }
+    }
+
+
+    .tech-lines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+
+    .tech-line {
+      position: absolute;
+      background: linear-gradient(90deg, transparent, rgba(74, 144, 226, 0.2), transparent);
+      height: 1px;
+      width: 100%;
+      transform-style: preserve-3d;
+      animation: lineMove 8s linear infinite;
+    }
+
+
+    @keyframes lineMove {
+      0% {
+        transform: translateX(-100%) translateZ(0);
+      }
+      100% {
+        transform: translateX(100%) translateZ(100px);
+      }
+    }
+
+
+    .data-particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -4;
+      perspective: 1000px;
+    }
+
+
+    .data-particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: rgba(74, 144, 226, 0.5);
+      transform-style: preserve-3d;
+      animation: particleFloat 6s linear infinite;
+    }
+
+
+    @keyframes particleFloat {
+      0% {
+        transform: translateZ(-1000px) translateX(-100%);
+      }
+      100% {
+        transform: translateZ(500px) translateX(100%);
+      }
+    }
+
 
     .section-title {
+      font-family: 'Orbitron', sans-serif;
       font-size: 2.8rem;
-      margin: 5rem 0 2rem;
-      text-align: center;
-      color: #0ff;
-      text-shadow: 0 0 15px #0ff;
+      text-align: left;
+      margin-bottom: 3rem;
+      color: var(--primary);
+      text-shadow: var(--text-glow);
+      transform-style: preserve-3d;
+      transition: transform 0.4s ease;
     }
 
-    .card-custom {
-      border-radius: 1rem;
-      background: linear-gradient(145deg, #202040, #1b1b2f);
-      border: none;
-      box-shadow: 0 10px 30px rgba(0,255,255,0.15);
+
+    .section-title:hover {
+      transform: rotateX(5deg) rotateY(5deg);
+    }
+
+
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      padding: 2rem;
+    }
+
+
+    .card {
+      background: rgba(10, 10, 21, 0.8);
+      border: 1px solid rgba(74, 144, 226, 0.2);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 2rem;
       color: #fff;
-      transition: 0.4s;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+      position: relative;
+      overflow: hidden;
     }
 
-    .card-custom:hover {
-      transform: scale(1.05);
-      box-shadow: 0 20px 40px rgba(0,255,255,0.3);
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, transparent, rgba(74, 144, 226, 0.1), transparent);
+      transform: translateX(-100%) rotate(45deg);
+      transition: transform 0.6s ease;
     }
 
-    .gradient-border {
-      border: 2px solid transparent;
-      border-image: linear-gradient(to right, #00f2fe, #4facfe);
-      border-image-slice: 1;
+
+    .card:hover::before {
+      transform: translateX(100%) rotate(45deg);
     }
 
-    .features-section, .testimonials-section, .contact-section, .about-section {
-      padding: 6rem 0;
+
+    .card:hover {
+      transform: translateY(-10px) scale(1.02) rotateX(5deg) rotateY(5deg);
+      box-shadow: 0 0 30px rgba(74, 144, 226, 0.2);
+      border-color: var(--primary);
     }
 
-    .about-section p {
-      font-size: 1.2rem;
-      max-width: 900px;
-      margin: auto;
-      text-align: center;
-      color: #ddd;
+
+    .card h3 {
+      transform: translateZ(20px);
+      color: var(--primary);
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 1rem;
+      text-shadow: var(--text-glow);
     }
+
+
+    .card p {
+      transform: translateZ(10px);
+    }
+
+
+    .features {
+      background: var(--darker);
+    }
+
+
+    .features::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    }
+
+
+    .testimonials {
+      background: var(--dark);
+    }
+
 
     .testimonial {
-      background-color: #1f1f2e;
+      background: linear-gradient(145deg, #1a1a2e, #16213e);
       padding: 2rem;
-      border-radius: 1rem;
-      color: #fff;
-      box-shadow: 0 0 25px rgba(0,255,255,0.08);
+      border-radius: 20px;
+      margin: 1rem;
+      transform-style: preserve-3d;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
     }
+
+
+    .testimonial::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, transparent, rgba(74, 144, 226, 0.1), transparent);
+      transform: translateX(-100%) rotate(45deg);
+      transition: transform 0.6s ease;
+    }
+
+
+    .testimonial:hover::before {
+      transform: translateX(100%) rotate(45deg);
+    }
+
+
+    .testimonial:hover {
+      transform: translateY(-5px) rotateX(5deg) rotateY(5deg);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+
+    .contact-form {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+
+    .form-control {
+      background: #1a1a2e;
+      border: 1px solid var(--primary);
+      color: #fff;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 10px;
+    }
+
+
+    .form-control:focus {
+      box-shadow: 0 0 10px rgba(0,255,255,0.2);
+      border-color: var(--secondary);
+    }
+
 
     footer {
-      background-color: #000;
-      color: #0ff;
+      background: var(--darker);
+      color: var(--primary);
       padding: 2rem 0;
       text-align: center;
+      position: relative;
     }
 
-    .form-control, .form-control:focus {
-      background-color: #111;
-      border: 1px solid #0ff;
-      color: #0ff;
-      box-shadow: none;
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    }
+
+
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+
+    .social-icons a {
+      color: var(--primary);
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
+      transform-style: preserve-3d;
+    }
+
+
+    .social-icons a:hover {
+      color: var(--secondary);
+      transform: translateY(-5px) rotateX(10deg);
+    }
+
+
+    .ai-badge {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      padding: 0.5rem 1.5rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: var(--darker);
+      box-shadow: 0 0 15px rgba(0,255,255,0.3);
+      animation: pulse 2s infinite;
+    }
+
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+
+    .floating-element {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background: rgba(74, 144, 226, 0.1);
+      border-radius: 50%;
+      animation: float 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-20px) rotate(180deg);
+      }
+      100% {
+        transform: translateY(0) rotate(360deg);
+      }
+    }
+
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 3rem;
+      }
+     
+      .hero p {
+        font-size: 1.2rem;
+      }
+     
+      .card-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -2;
+    }
+
+
+    .background-layers {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+
+    .layer {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.1;
+    }
+
+
+    .layer-1 {
+      background: radial-gradient(circle at center, rgba(74, 144, 226, 0.1) 0%, transparent 70%);
+      animation: pulse 8s ease-in-out infinite;
+    }
+
+
+    .layer-2 {
+      background: linear-gradient(45deg, rgba(74, 144, 226, 0.05) 25%, transparent 25%, transparent 75%, rgba(74, 144, 226, 0.05) 75%);
+      background-size: 100px 100px;
+      animation: moveGrid 20s linear infinite;
+    }
+
+
+    .layer-3 {
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 10px,
+        rgba(74, 144, 226, 0.05) 10px,
+        rgba(74, 144, 226, 0.05) 20px
+      );
+      animation: moveLines 15s linear infinite;
+    }
+
+
+    .floating-shapes {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+
+    .shape {
+      position: absolute;
+      background: rgba(74, 144, 226, 0.1);
+      border-radius: 50%;
+      filter: blur(20px);
+      animation: floatShape 15s ease-in-out infinite;
+    }
+
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0.1; }
+      50% { transform: scale(1.2); opacity: 0.2; }
+      100% { transform: scale(1); opacity: 0.1; }
+    }
+
+
+    @keyframes moveGrid {
+      0% { background-position: 0 0; }
+      100% { background-position: 100px 100px; }
+    }
+
+
+    @keyframes moveLines {
+      0% { background-position: 0 0; }
+      100% { background-position: 40px 40px; }
+    }
+
+
+    @keyframes floatShape {
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+        opacity: 0.1;
+      }
+      25% {
+        transform: translate(100px, -50px) rotate(90deg);
+        opacity: 0.2;
+      }
+      50% {
+        transform: translate(200px, 0) rotate(180deg);
+        opacity: 0.1;
+      }
+      75% {
+        transform: translate(100px, 50px) rotate(270deg);
+        opacity: 0.2;
+      }
+      100% {
+        transform: translate(0, 0) rotate(360deg);
+        opacity: 0.1;
+      }
+    }
+
+
+    .content-wrapper {
+      position: relative;
+      z-index: 1;
     }
   </style>
 </head>
 
+
 <body>
-  {% include 'navbar.html' %}
-  <section class="hero">
-    <div class="animate__animated animate__fadeInUp">
-      <h1>Driver Pose Detection</h1>
-      <p>Real-Time Monitoring | AI Feedback | Admin & Client Dashboards | Safer Roads Ahead</p>
-      <a href="#features" class="btn btn-glow btn-lg mt-4">Explore More</a>
-    </div>
-  </section>
+  <div class="cyber-grid"></div>
+  <div class="cyber-circles"></div>
+  <div class="tech-lines"></div>
+  <div class="data-particles"></div>
+  <div id="particles-js"></div>
+  <div class="background-layers">
+    <div class="layer layer-1"></div>
+    <div class="layer layer-2"></div>
+    <div class="layer layer-3"></div>
+  </div>
+  <div class="floating-shapes"></div>
+  <div class="content-wrapper">
+    {% include 'navbar.html' %}
 
-  <section class="container about-section">
-    <h2 class="section-title">About the System</h2>
-    <p>This advanced AI-powered solution continuously monitors driver behavior using intelligent pose detection algorithms. It alerts administrators in case of unwanted postures, drowsiness, or distractions, ensuring enhanced safety and control over transport operations.</p>
-  </section>
 
-  <section class="container how-it-works-section">
-    <h2 class="section-title">How It Works</h2>
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="card card-custom gradient-border">
-          <div class="card-body">
-            <h5 class="card-title">Step 1: Pose Detection</h5>
-            <p class="card-text">AI-powered cameras monitor driver posture in real-time using advanced algorithms.</p>
-          </div>
+    <div class="ai-badge">AI-Powered System</div>
+   
+    <section class="hero">
+      <div class="hero-background">
+        <div class="cyber-tunnel">
+          <div class="tunnel-layer"></div>
+        </div>
+        <div class="geometric-shapes">
+          <div class="shape"></div>
+          <div class="shape"></div>
+          <div class="shape"></div>
+          <div class="shape"></div>
+          <div class="shape"></div>
+          <div class="shape"></div>
+          <div class="shape"></div>
+          <div class="shape"></div>
+          <div class="shape"></div>
+          <div class="shape"></div>
+        </div>
+        <div class="energy-field"></div>
+        <div class="digital-rain"></div>
+        <div class="glow-lines">
+          <div class="glow-line"></div>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="card card-custom gradient-border">
-          <div class="card-body">
-            <h5 class="card-title">Step 2: Risk Analysis</h5>
-            <p class="card-text">The system evaluates detected poses for signs of drowsiness, distraction, or unsafe behavior.</p>
-          </div>
-        </div>
+      <div class="hero-content">
+        <h1>PoseGuard<span>Driver Safety</span></h1>
+        <p>Advanced AI-powered system for real-time driver monitoring, pose detection, and safety enhancement</p>
+        <a href="#features" class="btn btn-glow">Explore Features</a>
       </div>
-      <div class="col-md-4">
-        <div class="card card-custom gradient-border">
-          <div class="card-body">
-            <h5 class="card-title">Step 3: Alerts & Feedback</h5>
-            <p class="card-text">Instant alerts are sent to the driver and admin dashboard for corrective action.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="container features-section" id="features">
-    <h2 class="section-title">Key Features</h2>
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="card card-custom gradient-border">
-          <div class="card-body">
-            <h5 class="card-title">Live AI Monitoring</h5>
-            <p class="card-text">Continuously scans driver activity using pose detection with alert mechanisms built-in.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card card-custom gradient-border">
-          <div class="card-body">
-            <h5 class="card-title">Admin Dashboard</h5>
-            <p class="card-text">Full access to logs, alerts, driver screenshots, timestamps, and overall system insights.</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card card-custom gradient-border">
-          <div class="card-body">
-            <h5 class="card-title">Client Notifications</h5>
-            <p class="card-text">Timely notifications to drivers or owners when unusual posture or risk is detected.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card card-custom gradient-border">
-        <div class="card-body">
-          <h5 class="card-title">Data Analytics</h5>
-          <p class="card-text">Gain insights into driver behavior trends with detailed analytics and reports.</p>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <section class="container testimonials-section">
-    <h2 class="section-title">What Users Say</h2>
-    <div class="row">
-      <div class="col-md-6">
+    <section class="section features" id="features">
+      <h2 class="section-title">Key Features</h2>
+      <div class="card-container">
+        <div class="card">
+          <h3>Real-time Pose Detection</h3>
+          <p>Advanced deep learning algorithms continuously monitor and analyze driver posture, detecting unsafe positions and potential risks.</p>
+        </div>
+        <div class="card">
+          <h3>Smart Alert System</h3>
+          <p>Instant notifications for drowsiness, distraction, or unsafe driving patterns with intelligent feedback mechanisms.</p>
+        </div>
+        <div class="card">
+          <h3>Comprehensive Analytics</h3>
+          <p>Detailed insights and reports on driver behavior, safety metrics, and improvement recommendations.</p>
+        </div>
+        <div class="card">
+          <h3>Multi-Pose Recognition</h3>
+          <p>Detects various unsafe poses including slouching, leaning, and improper hand positions on the wheel.</p>
+        </div>
+        <div class="card">
+          <h3>Customizable Thresholds</h3>
+          <p>Adjustable sensitivity levels for different driving conditions and individual driver preferences.</p>
+        </div>
+        <div class="card">
+          <h3>Integration Ready</h3>
+          <p>Seamless integration with existing fleet management systems and vehicle telematics.</p>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="section testimonials">
+      <h2 class="section-title">What Users Say</h2>
+      <div class="card-container">
         <div class="testimonial">
-          <p>“Ever since we integrated the system, accident rates have dropped significantly. It’s like having a second pair of eyes!”</p>
+          <p>"The AI system has revolutionized our fleet safety. Accident rates have dropped by 40% since implementation, and driver feedback has been overwhelmingly positive."</p>
           <strong>— Logistics Director, SmartTransit</strong>
         </div>
-      </div>
-      <div class="col-md-6">
         <div class="testimonial">
-          <p>“Simple, effective, futuristic. The interface is clean and the insights are incredibly useful.”</p>
+          <p>"The real-time monitoring and intelligent feedback have significantly improved our driver performance and reduced insurance claims by 35%."</p>
           <strong>— Operations Head, FleetSecure</strong>
         </div>
+        <div class="testimonial">
+          <p>"PoseGuard's advanced pose detection has helped us maintain high safety standards across our entire fleet, with measurable improvements in driver behavior."</p>
+          <strong>— Safety Manager, TransGlobal</strong>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="container benefits-section">
-    <h2 class="section-title">Benefits</h2>
-    <ul class="list-group">
-      <li class="list-group-item">Reduced accident rates through proactive monitoring.</li>
-      <li class="list-group-item">Improved driver accountability and performance.</li>
-      <li class="list-group-item">Enhanced operational efficiency with real-time insights.</li>
-      <li class="list-group-item">Cost savings by preventing accidents and reducing downtime.</li>
-    </ul>
-  </section>
 
-  <section class="container faq-section">
-    <h2 class="section-title">Frequently Asked Questions</h2>
-    <div class="accordion" id="faqAccordion">
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="faq1">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
-            How does the system detect unwanted poses?
-          </button>
-        </h2>
-        <div id="collapse1" class="accordion-collapse collapse show">
-          <div class="accordion-body">
-            The system uses AI-based pose detection algorithms to monitor driver posture in real-time.
+    <section class="section contact">
+      <h2 class="section-title">Get In Touch</h2>
+      <div class="contact-form">
+        <form>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <input type="text" class="form-control" placeholder="Your Name">
+            </div>
+            <div class="col-md-6">
+              <input type="email" class="form-control" placeholder="Email Address">
+            </div>
+            <div class="col-12">
+              <textarea class="form-control" rows="4" placeholder="Message"></textarea>
+            </div>
+            <div class="col-12 text-center">
+              <button type="submit" class="btn btn-glow">Send Message</button>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="faq2">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
-            Can the system work in low-light conditions?
-          </button>
-        </h2>
-        <div id="collapse2" class="accordion-collapse collapse">
-          <div class="accordion-body">
-            Yes, the system is equipped with infrared sensors to function effectively in low-light environments.
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="container contact-section">
-    <h2 class="section-title">Get In Touch</h2>
-    <form class="row g-3">
-      <div class="col-md-6">
-        <input type="text" class="form-control" placeholder="Your Name">
-      </div>
-      <div class="col-md-6">
-        <input type="email" class="form-control" placeholder="Email Address">
-      </div>
-      <div class="col-12">
-        <textarea class="form-control" rows="4" placeholder="Message"></textarea>
-      </div>
-      <div class="col-12">
-        <button class="btn btn-glow">Send Message</button>
-      </div>
-    </form>
-  </section>
 
-  <footer>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <p>&copy; 2025 Driver Pose Detection | Powered by Aditya Srivastav | Designed for Safety</p>
-        </div>
-        <div class="col-md-6 text-end">
-          <a href="#" class="text-light me-3"><i class="fab fa-facebook"></i></a>
-          <a href="#" class="text-light me-3"><i class="fab fa-twitter"></i></a>
-          <a href="#" class="text-light"><i class="fab fa-linkedin"></i></a>
+    <footer>
+      <div class="container">
+        <p>&copy; 2025 Driver Pose Detection AI | Powered by Deep Learning</p>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-github"></i></a>
+          <a href="#"><i class="fab fa-linkedin"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
         </div>
       </div>
-    </div>
-  </footer>
+    </footer>
+  </div>
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <script>AOS.init();</script>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script>
+    // Initialize cyber circles
+    function createCyberCircles() {
+      const container = document.querySelector('.cyber-circles');
+      for (let i = 0; i < 5; i++) {
+        const circle = document.createElement('div');
+        circle.className = 'cyber-circle';
+        const size = Math.random() * 300 + 100;
+        circle.style.width = size + 'px';
+        circle.style.height = size + 'px';
+        circle.style.left = Math.random() * 100 + '%';
+        circle.style.top = Math.random() * 100 + '%';
+        circle.style.animationDelay = (Math.random() * 2) + 's';
+        container.appendChild(circle);
+      }
+    }
+
+
+    // Initialize tech lines
+    function createTechLines() {
+      const container = document.querySelector('.tech-lines');
+      for (let i = 0; i < 10; i++) {
+        const line = document.createElement('div');
+        line.className = 'tech-line';
+        line.style.top = (i * 10) + '%';
+        line.style.animationDelay = (Math.random() * 4) + 's';
+        container.appendChild(line);
+      }
+    }
+
+
+    // Initialize data particles
+    function createDataParticles() {
+      const container = document.querySelector('.data-particles');
+      for (let i = 0; i < 50; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'data-particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.top = Math.random() * 100 + '%';
+        particle.style.animationDelay = (Math.random() * 6) + 's';
+        container.appendChild(particle);
+      }
+    }
+
+
+    // Initialize constellation background
+    function initConstellation() {
+      const particlesContainer = document.querySelector('.floating-particles');
+      const numParticles = 30;
+      const numLines = 15;
+
+
+      // Create particles
+      for (let i = 0; i < numParticles; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+        particle.style.animationDelay = `${Math.random() * 8}s`;
+        particlesContainer.appendChild(particle);
+      }
+
+
+      // Create connecting lines
+      for (let i = 0; i < numLines; i++) {
+        const line = document.createElement('div');
+        line.className = 'connecting-line';
+        line.style.top = `${Math.random() * 100}%`;
+        line.style.animationDelay = `${Math.random() * 10}s`;
+        particlesContainer.appendChild(line);
+      }
+    }
+
+
+    // Enhanced particles configuration
+    particlesJS('particles-js', {
+      particles: {
+        number: {
+          value: 80,
+          density: {
+            enable: true,
+            value_area: 800
+          }
+        },
+        color: {
+          value: ['#4a90e2', '#50c9c3']
+        },
+        shape: {
+          type: ['circle', 'triangle', 'polygon'],
+          stroke: {
+            width: 1,
+            color: '#4a90e2'
+          },
+          polygon: {
+            nb_sides: 6
+          }
+        },
+        opacity: {
+          value: 0.6,
+          random: true,
+          anim: {
+            enable: true,
+            speed: 1,
+            opacity_min: 0.1,
+            sync: false
+          }
+        },
+        size: {
+          value: 3,
+          random: true,
+          anim: {
+            enable: true,
+            speed: 2,
+            size_min: 0.1,
+            sync: false
+          }
+        },
+        line_linked: {
+          enable: true,
+          distance: 150,
+          color: '#4a90e2',
+          opacity: 0.3,
+          width: 1,
+          triangles: {
+            enable: true,
+            opacity: 0.1
+          }
+        },
+        move: {
+          enable: true,
+          speed: 2,
+          direction: 'none',
+          random: true,
+          straight: false,
+          out_mode: 'out',
+          bounce: false,
+          attract: {
+            enable: true,
+            rotateX: 600,
+            rotateY: 1200
+          }
+        }
+      },
+      interactivity: {
+        detect_on: 'canvas',
+        events: {
+          onhover: {
+            enable: true,
+            mode: ['grab', 'bubble', 'repulse']
+          },
+          onclick: {
+            enable: true,
+            mode: 'push'
+          },
+          resize: true
+        },
+        modes: {
+          grab: {
+            distance: 140,
+            line_linked: {
+              opacity: 0.8
+            }
+          },
+          bubble: {
+            distance: 200,
+            size: 6,
+            duration: 2,
+            opacity: 0.8,
+            speed: 3
+          },
+          repulse: {
+            distance: 100,
+            duration: 0.4
+          },
+          push: {
+            particles_nb: 4
+          }
+        }
+      },
+      retina_detect: true
+    });
+
+
+    // Initialize all animations
+    window.addEventListener('load', () => {
+      initConstellation();
+      createCyberCircles();
+      createTechLines();
+      createDataParticles();
+    });
+
+
+    // Add parallax effect to constellation
+    document.addEventListener('mousemove', (e) => {
+      const mouseX = e.clientX / window.innerWidth;
+      const mouseY = e.clientY / window.innerHeight;
+     
+      const constellation = document.querySelector('.constellation');
+      const networkLines = document.querySelector('.network-lines');
+      const particles = document.querySelector('.floating-particles');
+     
+      constellation.style.transform = `translate(${mouseX * 20}px, ${mouseY * 20}px)`;
+      networkLines.style.transform = `translate(${mouseX * -15}px, ${mouseY * -15}px)`;
+      particles.style.transform = `translate(${mouseX * 25}px, ${mouseY * 25}px)`;
+    });
+
+
+    // Initialize 3D background elements
+    function init3DBackground() {
+      // Create tunnel layers
+      const cyberTunnel = document.querySelector('.cyber-tunnel');
+      for (let i = 0; i < 10; i++) {
+        const layer = document.createElement('div');
+        layer.className = 'tunnel-layer';
+        layer.style.transform = `translateZ(${i * -100}px)`;
+        layer.style.opacity = 1 - (i * 0.1);
+        cyberTunnel.appendChild(layer);
+      }
+
+
+      // Create geometric shapes
+      const shapes = document.querySelector('.geometric-shapes');
+      const shapeTypes = ['hexagon', 'pyramid', 'cube'];
+      const shapeElements = shapes.querySelectorAll('.shape');
+     
+      shapeElements.forEach((shape, index) => {
+        const type = shapeTypes[index % 3];
+        shape.classList.add(type);
+       
+        // Random position and animation delay
+        shape.style.left = `${Math.random() * 100}%`;
+        shape.style.top = `${Math.random() * 100}%`;
+        shape.style.animationDelay = `${Math.random() * 10}s`;
+       
+        // If it's a cube, create faces
+        if (type === 'cube') {
+          const faces = ['front', 'back', 'right', 'left', 'top', 'bottom'];
+          faces.forEach((face, i) => {
+            const cubeFace = document.createElement('div');
+            cubeFace.className = 'cube-face';
+            cubeFace.style.transform = getCubeFaceTransform(face);
+            shape.appendChild(cubeFace);
+          });
+        }
+      });
+
+
+      // Create glow lines
+      const glowLines = document.querySelector('.glow-lines');
+      for (let i = 0; i < 5; i++) {
+        const line = document.createElement('div');
+        line.className = 'glow-line';
+        line.style.top = `${Math.random() * 100}%`;
+        line.style.animationDelay = `${Math.random() * 8}s`;
+        glowLines.appendChild(line);
+      }
+    }
+
+
+    // Helper function to get cube face transforms
+    function getCubeFaceTransform(face) {
+      switch(face) {
+        case 'front': return 'translateZ(40px)';
+        case 'back': return 'translateZ(-40px) rotateY(180deg)';
+        case 'right': return 'translateX(40px) rotateY(90deg)';
+        case 'left': return 'translateX(-40px) rotateY(-90deg)';
+        case 'top': return 'translateY(-40px) rotateX(90deg)';
+        case 'bottom': return 'translateY(40px) rotateX(-90deg)';
+      }
+    }
+
+
+    // Add mouse movement effect
+    function addMouseEffect() {
+      document.addEventListener('mousemove', (e) => {
+        const mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+        const mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+       
+        const cyberTunnel = document.querySelector('.cyber-tunnel');
+        const shapes = document.querySelector('.geometric-shapes');
+        const energyField = document.querySelector('.energy-field');
+        const digitalRain = document.querySelector('.digital-rain');
+       
+        cyberTunnel.style.transform = `translate(-50%, -50%) rotateX(${60 + mouseY * 10}deg) rotateY(${mouseX * 10}deg)`;
+        shapes.style.transform = `translate(${mouseX * 20}px, ${mouseY * 20}px) rotateX(${mouseY * 5}deg) rotateY(${mouseX * 5}deg)`;
+        energyField.style.transform = `translate(${mouseX * -30}px, ${mouseY * -30}px)`;
+        digitalRain.style.transform = `translate(${mouseX * 10}px, ${mouseY * 10}px)`;
+      });
+    }
+
+
+    // Initialize all animations
+    window.addEventListener('load', () => {
+      init3DBackground();
+      addMouseEffect();
+    });
+  </script>
 </body>
 
+
 </html>
+
+
+

@@ -16,17 +16,10 @@ except Exception as e:
 
 # Standardized class labels
 class_labels = [
-<<<<<<< HEAD
     "Normal Pose",       # class 0
     "Phone (Using)",      # class 1
     "Phone (Talking)",       # class 2 sahi
     "Distracted....",           # class 3
-=======
-    "Normal Pose",       # class 0 sahi
-    "",      # class 1
-    "Using Phone",       # class 2 sahi
-    "",           # class 3
->>>>>>> 27302d84c06b11e2a53b651e37e0b78b6427b8d3
     "Drinking",      # class 4 sahi
     "No Hands on Wheel", # class 5 sahi
     "Makeup",          # class 6 sahi
