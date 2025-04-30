@@ -324,4 +324,4 @@ def process_video():
 if __name__ == '__main__':
     if not os.path.exists('static/screenshots'):
         os.makedirs('static/screenshots')
-    app.run(debug=False)
+    app.run(debug=True)
