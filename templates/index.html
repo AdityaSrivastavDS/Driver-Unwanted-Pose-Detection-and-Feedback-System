@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Driver Unwanted Pose Detection</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <link href="https://unpkg.com/animate.css@4.1.1/animate.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+
+    .hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+      background: url('https://www.optalert.com/wp-content/uploads/2024/12/optalert_eyelid_movement_on_an_intoxication_scale_while_driving_a3ecd44f-9b39-43bf-8fd0-79181a6071ef-1024x585.png') center/cover no-repeat;
+      background-blend-mode: overlay;
+      background-color: rgba(0,0,0,0.2);
+    }
+
+    .hero h1 {
+      font-size: 4.5rem;
+      font-weight: 900;
+      color: #00ffee;
+      text-shadow: 0 0 20px #00ffee;
+    }
+
+    .hero p {
+      font-size: 1.5rem;
+      color: #eee;
+    }
+
+    .btn-glow {
+      background-color: #00ffee;
+      color: #000;
+      border: none;
+      box-shadow: 0 0 20px #00ffee;
+      transition: 0.3s;
+    }
+
+    .btn-glow:hover {
+      background-color: #00e1d6;
+      box-shadow: 0 0 30px #00ffee, 0 0 60px #00ffee;
+    }
+
+    .section-title {
+      font-size: 2.8rem;
+      margin: 5rem 0 2rem;
+      text-align: center;
+      color: #0ff;
+      text-shadow: 0 0 15px #0ff;
+    }
+
+    .card-custom {
+      border-radius: 1rem;
+      background: linear-gradient(145deg, #202040, #1b1b2f);
+      border: none;
+      box-shadow: 0 10px 30px rgba(0,255,255,0.15);
+      color: #fff;
+      transition: 0.4s;
+    }
+
+    .card-custom:hover {
+      transform: scale(1.05);
+      box-shadow: 0 20px 40px rgba(0,255,255,0.3);
+    }
+
+    .gradient-border {
+      border: 2px solid transparent;
+      border-image: linear-gradient(to right, #00f2fe, #4facfe);
+      border-image-slice: 1;
+    }
+
+    .features-section, .testimonials-section, .contact-section, .about-section {
+      padding: 6rem 0;
+    }
+
+    .about-section p {
+      font-size: 1.2rem;
+      max-width: 900px;
+      margin: auto;
+      text-align: center;
+      color: #ddd;
+    }
+
+    .testimonial {
+      background-color: #1f1f2e;
+      padding: 2rem;
+      border-radius: 1rem;
+      color: #fff;
+      box-shadow: 0 0 25px rgba(0,255,255,0.08);
+    }
+
+    footer {
+      background-color: #000;
+      color: #0ff;
+      padding: 2rem 0;
+      text-align: center;
+    }
+
+    .form-control, .form-control:focus {
+      background-color: #111;
+      border: 1px solid #0ff;
+      color: #0ff;
+      box-shadow: none;
+    }
+  </style>
+</head>
+
+<body>
+  {% include 'navbar.html' %}
+  <section class="hero">
+    <div class="animate__animated animate__fadeInUp">
+      <h1>Driver Pose Detection</h1>
+      <p>Real-Time Monitoring | AI Feedback | Admin & Client Dashboards | Safer Roads Ahead</p>
+      <a href="#features" class="btn btn-glow btn-lg mt-4">Explore More</a>
+    </div>
+  </section>
+
+  <section class="container about-section">
+    <h2 class="section-title">About the System</h2>
+    <p>This advanced AI-powered solution continuously monitors driver behavior using intelligent pose detection algorithms. It alerts administrators in case of unwanted postures, drowsiness, or distractions, ensuring enhanced safety and control over transport operations.</p>
+  </section>
+
+  <section class="container how-it-works-section">
+    <h2 class="section-title">How It Works</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card card-custom gradient-border">
+          <div class="card-body">
+            <h5 class="card-title">Step 1: Pose Detection</h5>
+            <p class="card-text">AI-powered cameras monitor driver posture in real-time using advanced algorithms.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card card-custom gradient-border">
+          <div class="card-body">
+            <h5 class="card-title">Step 2: Risk Analysis</h5>
+            <p class="card-text">The system evaluates detected poses for signs of drowsiness, distraction, or unsafe behavior.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card card-custom gradient-border">
+          <div class="card-body">
+            <h5 class="card-title">Step 3: Alerts & Feedback</h5>
+            <p class="card-text">Instant alerts are sent to the driver and admin dashboard for corrective action.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container features-section" id="features">
+    <h2 class="section-title">Key Features</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card card-custom gradient-border">
+          <div class="card-body">
+            <h5 class="card-title">Live AI Monitoring</h5>
+            <p class="card-text">Continuously scans driver activity using pose detection with alert mechanisms built-in.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card card-custom gradient-border">
+          <div class="card-body">
+            <h5 class="card-title">Admin Dashboard</h5>
+            <p class="card-text">Full access to logs, alerts, driver screenshots, timestamps, and overall system insights.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card card-custom gradient-border">
+          <div class="card-body">
+            <h5 class="card-title">Client Notifications</h5>
+            <p class="card-text">Timely notifications to drivers or owners when unusual posture or risk is detected.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card card-custom gradient-border">
+        <div class="card-body">
+          <h5 class="card-title">Data Analytics</h5>
+          <p class="card-text">Gain insights into driver behavior trends with detailed analytics and reports.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container testimonials-section">
+    <h2 class="section-title">What Users Say</h2>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="testimonial">
+          <p>“Ever since we integrated the system, accident rates have dropped significantly. It’s like having a second pair of eyes!”</p>
+          <strong>— Logistics Director, SmartTransit</strong>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="testimonial">
+          <p>“Simple, effective, futuristic. The interface is clean and the insights are incredibly useful.”</p>
+          <strong>— Operations Head, FleetSecure</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container benefits-section">
+    <h2 class="section-title">Benefits</h2>
+    <ul class="list-group">
+      <li class="list-group-item">Reduced accident rates through proactive monitoring.</li>
+      <li class="list-group-item">Improved driver accountability and performance.</li>
+      <li class="list-group-item">Enhanced operational efficiency with real-time insights.</li>
+      <li class="list-group-item">Cost savings by preventing accidents and reducing downtime.</li>
+    </ul>
+  </section>
+
+  <section class="container faq-section">
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <div class="accordion" id="faqAccordion">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="faq1">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+            How does the system detect unwanted poses?
+          </button>
+        </h2>
+        <div id="collapse1" class="accordion-collapse collapse show">
+          <div class="accordion-body">
+            The system uses AI-based pose detection algorithms to monitor driver posture in real-time.
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="faq2">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+            Can the system work in low-light conditions?
+          </button>
+        </h2>
+        <div id="collapse2" class="accordion-collapse collapse">
+          <div class="accordion-body">
+            Yes, the system is equipped with infrared sensors to function effectively in low-light environments.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container contact-section">
+    <h2 class="section-title">Get In Touch</h2>
+    <form class="row g-3">
+      <div class="col-md-6">
+        <input type="text" class="form-control" placeholder="Your Name">
+      </div>
+      <div class="col-md-6">
+        <input type="email" class="form-control" placeholder="Email Address">
+      </div>
+      <div class="col-12">
+        <textarea class="form-control" rows="4" placeholder="Message"></textarea>
+      </div>
+      <div class="col-12">
+        <button class="btn btn-glow">Send Message</button>
+      </div>
+    </form>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <p>&copy; 2025 Driver Pose Detection | Powered by Aditya Srivastav | Designed for Safety</p>
+        </div>
+        <div class="col-md-6 text-end">
+          <a href="#" class="text-light me-3"><i class="fab fa-facebook"></i></a>
+          <a href="#" class="text-light me-3"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="text-light"><i class="fab fa-linkedin"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>AOS.init();</script>
+</body>
+
+</html>
