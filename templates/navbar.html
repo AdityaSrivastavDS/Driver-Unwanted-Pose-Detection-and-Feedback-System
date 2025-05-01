@@ -28,23 +28,32 @@
 </nav>
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --neon-cyan: #00f3ff;
+    --neon-magenta: #ff00ff;
+    --neon-blue: #0066ff;
+    --neon-green: #00ff9d;
+    --neon-pink: #ff1493;
+    --dark-bg: #0a0a15;
+    --darker-bg: #050508;
+    --text-glow: 0 0 10px rgba(0, 243, 255, 0.5);
+  }
 
   .navbar-custom {
     width: 100%;
     position: sticky;
     top: 0;
     z-index: 1000;
-    background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-    padding: 15px 30px;
-    font-family: 'Inter', sans-serif;
+    background: rgba(10, 10, 21, 0.95);
     backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    transform: translateY(0);
+    border-bottom: 1px solid rgba(0, 243, 255, 0.1);
+    padding: 15px 30px;
+    font-family: 'Orbitron', sans-serif;
+    transform-style: preserve-3d;
+    transform: translateZ(20px);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
   }
 
   .navbar-background {
@@ -54,21 +63,11 @@
     width: 100%;
     height: 100%;
     background: 
-      radial-gradient(circle at 20% 20%, rgba(74, 144, 226, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(255, 107, 107, 0.1) 0%, transparent 50%);
+      radial-gradient(circle at 20% 20%, rgba(0, 243, 255, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(255, 0, 255, 0.1) 0%, transparent 50%);
     opacity: 0.5;
     animation: backgroundPulse 8s ease-in-out infinite;
     z-index: -1;
-  }
-
-  .navbar-custom:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 40px rgba(0, 0, 0, 0.4);
-    background: linear-gradient(135deg, #1f1f1f, #2f2f2f);
-  }
-
-  .navbar-custom:hover .navbar-background {
-    animation: backgroundPulse 4s ease-in-out infinite;
   }
 
   .navbar-inner {
@@ -91,140 +90,77 @@
     position: relative;
     padding: 8px 15px;
     border-radius: 15px;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(0, 243, 255, 0.05);
     backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 243, 255, 0.1);
   }
 
   .logo-icon {
     font-size: 1.8rem;
-    transform: translateY(0) rotate(0deg);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    display: inline-block;
+    color: var(--neon-cyan);
+    text-shadow: var(--text-glow);
     animation: float 3s ease-in-out infinite;
-    text-shadow: 0 0 10px rgba(74, 144, 226, 0.5);
   }
 
   .logo-text {
     font-size: 1.5rem;
     font-weight: 700;
-    background: linear-gradient(45deg, #ffffff, #e0e0e0);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    letter-spacing: -0.5px;
-    position: relative;
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-  }
-
-  .logo-text::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #4a90e2, transparent);
-    transform: scaleX(0);
-    transition: transform 0.4s ease;
-  }
-
-  .navbar-brand-custom:hover {
-    transform: translateY(-3px) scale(1.02);
-    background: rgba(255, 255, 255, 0.05);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  }
-
-  .navbar-brand-custom:hover .logo-icon {
-    transform: translateY(-5px) rotate(15deg);
-    animation: none;
-    text-shadow: 0 0 15px rgba(74, 144, 226, 0.7);
-  }
-
-  .navbar-brand-custom:hover .logo-text::after {
-    transform: scaleX(1);
+    color: var(--neon-cyan);
+    text-shadow: var(--text-glow);
+    letter-spacing: 1px;
   }
 
   .navbar-links-custom {
     display: flex;
     flex-wrap: wrap;
-    gap: 30px;
+    gap: 20px;
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
   .navbar-links-custom li a {
-    color: #e0e0e0;
+    color: #ffffff;
     text-decoration: none;
     font-weight: 500;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     padding: 10px 20px;
     border-radius: 15px;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    overflow: hidden;
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(0, 243, 255, 0.05);
     backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-  }
-
-  .navbar-links-custom li a::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(45deg, transparent, rgba(74, 144, 226, 0.1), transparent);
-    transform: translateX(-100%);
-    transition: transform 0.4s ease;
-  }
-
-  .navbar-links-custom li a::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #4a90e2, transparent);
-    transform: scaleX(0);
-    transition: transform 0.4s ease;
+    border: 1px solid rgba(0, 243, 255, 0.1);
+    text-transform: uppercase;
+    letter-spacing: 1px;
   }
 
   .navbar-links-custom li a:hover {
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.05);
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  }
-
-  .navbar-links-custom li a:hover::before {
-    transform: translateX(100%);
-  }
-
-  .navbar-links-custom li a:hover::after {
-    transform: scaleX(1);
+    color: var(--neon-cyan);
+    background: rgba(0, 243, 255, 0.1);
+    transform: translateY(-3px) translateZ(10px);
+    box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+    text-shadow: var(--text-glow);
   }
 
   .logout-link-custom {
-    color: #ff6b6b;
-    background: rgba(255, 107, 107, 0.1);
+    color: var(--neon-pink);
+    background: rgba(255, 20, 147, 0.1);
+    border: 1px solid rgba(255, 20, 147, 0.2);
   }
 
   .logout-link-custom:hover {
     color: #ffffff;
-    background: rgba(255, 107, 107, 0.2);
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.2);
+    background: rgba(255, 20, 147, 0.2);
+    box-shadow: 0 0 15px rgba(255, 20, 147, 0.3);
   }
 
   @keyframes float {
     0%, 100% {
-      transform: translateY(0) rotate(0deg);
+      transform: translateY(0);
     }
     50% {
-      transform: translateY(-5px) rotate(5deg);
+      transform: translateY(-5px);
     }
   }
 
@@ -248,7 +184,7 @@
     .navbar-links-custom {
       width: 100%;
       justify-content: center;
-      gap: 15px;
+      gap: 10px;
     }
   }
 </style>
