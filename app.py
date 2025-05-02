@@ -74,7 +74,7 @@ def play_alert_sound():
         # Reset the event flag
         sound_stop_event.clear()
         while not sound_stop_event.is_set():
-            playsound("static/resources/random_alert.mp3")
+            playsound("static/resources/beep.mp3")
             # Small delay to prevent CPU overload
             sound_stop_event.wait(0.1)
     except Exception as e:
