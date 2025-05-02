@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, Response
+from flask import Flask, render_template, request, redirect, url_for, session, Response, abort
 from flask_sqlalchemy import SQLAlchemy
 import bcrypt   
 import cv2
@@ -7,7 +7,6 @@ from threading import Thread, Event
 from datetime import datetime
 import os
 from pose_detection import detect_pose
-from flask import abort
 from werkzeug.utils import secure_filename
 import tempfile
 
@@ -74,7 +73,7 @@ def play_alert_sound():
         # Reset the event flag
         sound_stop_event.clear()
         while not sound_stop_event.is_set():
-            playsound("static/resources/random_alert.mp3")
+            playsound("static/resources/beep.mp3")
             # Small delay to prevent CPU overload
             sound_stop_event.wait(0.1)
     except Exception as e:
@@ -92,15 +91,16 @@ def process_frame(frame, user_email):
         return frame, False, "Error", 0
 
 def gen_frames(user_email):
-    # Only record for normal users, not admin
     if user_email.endswith("@poseguard.com"):
         return
 
-    unwanted_pose_count = 0  # Counter for consecutive unwanted pose detections
-    threshold = 10  # Increased threshold for unwanted pose detection
-    last_alert_time = datetime.now()  # Track last alert time
-    cooldown_seconds = 10  # Cooldown period between alerts
+    unwanted_pose_count = 0
+    threshold = 10
+    last_alert_time = datetime.now()
+    cooldown_seconds = 10
     sound_thread = None
+    frame_skip = 2  # Process every 2nd frame
+    frame_count = 0
 
     while True:
         try:
@@ -109,18 +109,27 @@ def gen_frames(user_email):
                 print("Failed to grab frame")
                 continue
 
-            # Process frame in a separate thread
-            frame_thread = Thread(target=process_frame, args=(frame, user_email))
-            frame_thread.start()
-            frame_thread.join()
+            frame_count += 1
+            if frame_count % frame_skip != 0:  # Skip frames to reduce processing load
+                # Still display frame but skip processing
+                ret, buffer = cv2.imencode('.jpg', frame)
+                frame_bytes = buffer.tobytes()
+                yield (b'--frame\r\n'
+                       b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+                continue
 
-            frame, is_unwanted, class_name, confidence = process_frame(frame, user_email)
+            # Process frame
+            is_unwanted, class_name, confidence = detect_pose(frame)
+            
+            # Draw prediction results
+            label = f"{class_name}: {confidence * 100:.1f}%"
+            color = (0, 0, 255) if is_unwanted else (0, 255, 0)
+            cv2.putText(frame, label, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
 
             if is_unwanted:
                 unwanted_pose_count += 1
             else:
                 unwanted_pose_count = 0
-                # Stop sound if pose becomes correct
                 if sound_thread and sound_thread.is_alive():
                     sound_stop_event.set()
 
@@ -145,26 +154,25 @@ def gen_frames(user_email):
                     db.session.add(screenshot_alert)
                     db.session.commit()
 
-                # Start new sound alert thread
                 if not sound_thread or not sound_thread.is_alive():
                     sound_thread = Thread(target=play_alert_sound)
                     sound_thread.start()
                 
-                last_alert_time = current_time  # Update last alert time
-                unwanted_pose_count = 0  # Reset the counter after triggering the alert
+                last_alert_time = current_time
+                unwanted_pose_count = 0
 
-            ret, buffer = cv2.imencode('.jpg', frame)
-            frame = buffer.tobytes()
+            ret, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 80])  # Reduce JPEG quality for faster transmission
+            frame_bytes = buffer.tobytes()
 
             yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
         except Exception as e:
             print(f"Error in frame processing: {e}")
             continue
 
 
 @app.route('/video-feed/<filename>')
-def video_feed(filename):
+def video_feed_with_filename(filename):
     if 'user' not in session:
         return redirect(url_for('login'))
     
@@ -173,31 +181,52 @@ def video_feed(filename):
         cap = cv2.VideoCapture(video_path)
         
         if not cap.isOpened():
+            print(f"Error: Could not open video file at {video_path}")
             return
             
-        while True:
-            ret, frame = cap.read()
-            if not ret:
-                break
+        frame_skip = 2  # Process every 2nd frame to improve performance
+        frame_count = 0
+        
+        try:
+            while True:
+                ret, frame = cap.read()
+                if not ret:
+                    break
                 
-            try:
-                is_unwanted, class_name, confidence = detect_pose(frame)
-                label = f"{class_name}: {confidence * 100:.1f}%"
-                color = (0, 0, 255) if is_unwanted else (0, 255, 0)
-                cv2.putText(frame, label, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
+                frame_count += 1
+                if frame_count % frame_skip != 0:
+                    continue
+                    
+                try:
+                    is_unwanted, class_name, confidence = detect_pose(frame)
+                    label = f"{class_name}: {confidence * 100:.1f}%"
+                    color = (0, 0, 255) if is_unwanted else (0, 255, 0)
+                    cv2.putText(frame, label, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
+                    
+                except Exception as e:
+                    print(f"Error processing frame: {e}")
+                    
+                ret, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 80])
+                frame_bytes = buffer.tobytes()
                 
-            except Exception as e:
-                print(f"Error processing frame: {e}")
-                
-            ret, buffer = cv2.imencode('.jpg', frame)
-            frame_bytes = buffer.tobytes()
-            
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
-                   
-        cap.release()
+                yield (b'--frame\r\n'
+                       b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+                       
+        except Exception as e:
+            print(f"Error in generate_frames: {e}")
+        finally:
+            cap.release()
     
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/video_feed')
+def video_feed():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    if session.get('admin'):
+        abort(403)  # Admins don't have access to video feed
+    return Response(gen_frames(session.get('user')), 
+                   mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/')
 
@@ -314,11 +343,12 @@ def process_video():
         return 'Invalid file type', 400
 
     # Save uploaded file temporarily
-    temp_path = os.path.join(tempfile.gettempdir(), secure_filename(video_file.filename))
+    filename = secure_filename(video_file.filename)
+    temp_path = os.path.join(tempfile.gettempdir(), filename)
     video_file.save(temp_path)
     
-    return render_template('video_upload.html', 
-                         filename=secure_filename(video_file.filename))
+    # Return the template with the filename for video processing
+    return render_template('video_upload.html', filename=filename)
 
 
 if __name__ == '__main__':

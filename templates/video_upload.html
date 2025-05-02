@@ -21,7 +21,7 @@
         <div class="mt-8">
             <h3 class="text-xl font-semibold mb-4 neon-text">Live Analysis</h3>
             <div class="border border-gray-700 rounded-lg p-4">
-                <img src="{{ url_for('video_feed', filename=filename) }}" class="w-full rounded-lg">
+                <img src="{{ url_for('video_feed_with_filename', filename=filename) }}" class="w-full rounded-lg">
             </div>
             <div class="mt-4 text-center text-gray-300">
                 <p>Analyzing video in real-time. Unwanted poses will be highlighted in red.</p>
