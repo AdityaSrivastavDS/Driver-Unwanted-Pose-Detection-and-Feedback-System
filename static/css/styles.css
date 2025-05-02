@@ -262,7 +262,7 @@ body {
   position: absolute;
   width: 60px;
   height: 60px;
-  background-image: url('/static/img/star.png'); /* Replace with your icon path */
+  background-image: url('/static/img/favicon.png'); /* Replace with your icon path */
   background-size: contain;
   background-repeat: no-repeat;
   animation: floatSticker 6s infinite ease-in-out alternate;
