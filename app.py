@@ -163,7 +163,7 @@ def gen_frames(user_email):
             continue
 
 
-@app.route('/video-feed/<filename>')
+@app.route('/video_feed/<filename>')
 def video_feed(filename):
     if 'user' not in session:
         return redirect(url_for('login'))
@@ -173,34 +173,62 @@ def video_feed(filename):
         cap = cv2.VideoCapture(video_path)
         
         if not cap.isOpened():
+            print("Error: Unable to open video file.")
             return
             
         while True:
             ret, frame = cap.read()
             if not ret:
                 break
-                
+
             try:
                 is_unwanted, class_name, confidence = detect_pose(frame)
                 label = f"{class_name}: {confidence * 100:.1f}%"
                 color = (0, 0, 255) if is_unwanted else (0, 255, 0)
                 cv2.putText(frame, label, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
-                
             except Exception as e:
                 print(f"Error processing frame: {e}")
-                
+
             ret, buffer = cv2.imencode('.jpg', frame)
             frame_bytes = buffer.tobytes()
-            
+
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
                    
         cap.release()
-    
+
     return Response(generate_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-@app.route('/')
+#For live video processing
+@app.route('/live_feed')
+def live_feed():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    
+    def generate_live_frames():
+        while True:
+            success, frame = camera.read()
+            if not success:
+                print("Failed to grab frame")
+                break
 
+            try:
+                is_unwanted, class_name, confidence = detect_pose(frame)
+                label = f"{class_name}: {confidence * 100:.1f}%"
+                color = (0, 0, 255) if is_unwanted else (0, 255, 0)
+                cv2.putText(frame, label, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.9, color, 2)
+            except Exception as e:
+                print(f"Error processing frame: {e}")
+
+            ret, buffer = cv2.imencode('.jpg', frame)
+            frame_bytes = buffer.tobytes()
+
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+
+    return Response(generate_live_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/')
 def index():
     return render_template('index.html')
 
