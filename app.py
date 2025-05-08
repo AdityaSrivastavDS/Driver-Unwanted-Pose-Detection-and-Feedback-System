@@ -234,22 +234,37 @@ def index():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    error = None
     if request.method == 'POST':
         name = request.form['name']
         username = request.form['username']
         email = request.form['email']
         password = request.form['password']
 
-        user = User.query.filter((User.username == username) | (User.email == email)).first()
-        if user:
-            return render_template('signup.html', error="Username or Email already exists!")
+        if not all([username, email, password]):
+            error = 'All fields are required'
+        # elif password != confirm_password:
+        #     error = 'Passwords do not match'
+        elif len(password) < 8:
+            error = 'Password must be at least 8 characters long'
+        elif not any(char.isdigit() for char in password):
+            error = 'Password must contain at least one digit'
+        elif not any(char.isalpha() for char in password):
+            error = 'Password must contain at least one letter'
+        elif not any(char in '!@#$%^&*()_+' for char in password):
+            error = 'Password must contain at least one special character'
+        elif not any(char.isupper() for char in password):
+            error = 'Password must contain at least one uppercase letter'
+        else:
+            user = User.query.filter((User.username == username) | (User.email == email)).first()
+            if user:
+                error="Username or Email already exists!"
+            new_user = User(name, username, email, password)
+            db.session.add(new_user)
+            db.session.commit()
+            return redirect(url_for('login'))
 
-        new_user = User(name, username, email, password)
-        db.session.add(new_user)
-        db.session.commit()
-        return redirect(url_for('login'))
-
-    return render_template('signup.html')
+    return render_template('signup.html', error=error)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -353,4 +368,4 @@ def process_video():
 if __name__ == '__main__':
     if not os.path.exists('static/screenshots'):
         os.makedirs('static/screenshots')
-    app.run(debug=True)
+    app.run(debug=False)
